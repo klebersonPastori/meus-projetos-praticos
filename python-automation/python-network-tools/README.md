@@ -1,178 +1,72 @@
-=====================================================================
-                    FERRAMENTAS DE REDE (GUI)
-=====================================================================
+# 🛠️ Python Network Tools (GUI)
 
-Aplicativo desktop desenvolvido em Python com PySide6 para execução
-visual de comandos de rede no Windows.
+![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Framework](https://img.shields.io/badge/PySide6-GUI-brightgreen.svg)
+![OS](https://img.shields.io/badge/OS-Windows-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Autor: Kleberson Pastori
-Projeto para fins educacionais, profissionais e de portfólio.
+Um aplicativo desktop desenvolvido em Python com a biblioteca **PySide6** que funciona como um painel central visual para execução e diagnóstico de comandos de rede no Windows. 
 
----------------------------------------------------------------------
-                         VISÃO GERAL
----------------------------------------------------------------------
+Em vez de digitar comandos manualmente no Prompt de Comando, o usuário executa tarefas essenciais de rede e cibersegurança através de uma interface simples e intuitiva, com a saída exibida em um console integrado. É um verdadeiro "canivete suíço" para a administração de redes.
 
-O python-network-tools – Ferramentas de Rede funciona como um painel central de
-diagnóstico de rede.
+## ✨ Principais Funcionalidades
 
-Ao invés de digitar comandos manualmente no Prompt de Comando, o
-usuário executa tarefas comuns de rede através de botões, com a
-saída exibida em um console integrado.
+* **Interface Gráfica (GUI):** Simples, responsiva e intuitiva.
+* **Execução Nativa:** Roda comandos nativos do Windows diretamente pelo app.
+* **Console Interno Inteligente:** Exibe a saída dos comandos com timestamp (data e hora) e separadores visuais para facilitar a leitura.
+* **Validação de Entrada:** Validação automática de endereços IPv4 e portas TCP (1 a 65535).
+* **Atalhos Externos:** Botões rápidos para abrir o Prompt de Comando (CMD) e a Conexão de Área de Trabalho Remota (RDP / mstsc).
 
->>> Analogia prática:
->>> É como um “canivete suíço” para rede no Windows, reunindo
->>> várias ferramentas em um único lugar.
+## 🧰 Comandos de Rede Disponíveis
 
----------------------------------------------------------------------
-                   PRINCIPAIS FUNCIONALIDADES
----------------------------------------------------------------------
+| Comando | Descrição | Uso Prático / SOC |
+| :--- | :--- | :--- |
+| **`PING`** | Testa a conectividade com um IP ou domínio. | Verificar se um servidor ou host está ativo e respondendo. |
+| **`IPCONFIG /ALL`** | Exibe as configurações completas de rede. | Obter detalhes de IP, Gateway, DNS, DHCP e adaptadores físicos. |
+| **`HOSTNAME`** | Mostra o nome do computador local. | Com um IP informado, tenta resolução reversa (`ping -a`). |
+| **`TRACERT`** | Mostra a rota dos pacotes até o destino. | Identificar gargalos, falhas de rota ou bloqueios de firewall. |
+| **`TEST-NETCONNECTION`** | Testa se uma porta TCP está acessível. | Verificar se portas específicas (ex: 443, 3389) estão abertas sem precisar do Telnet. |
+| **`NSLOOKUP`** | Realiza consultas DNS. | Validar a resolução de nomes de domínio e apontamentos de servidores. |
+| **`NETSTAT -AN`** | Lista todas as conexões e portas ativas. | Essencial em cibersegurança para caça a ameaças e análise de portas expostas. |
+| **`ARP -A`** | Exibe a tabela ARP local. | Mapear a relação entre endereços IP e endereços físicos (MAC). |
+| **`ROUTE PRINT`** | Mostra a tabela de rotas do sistema. | Analisar como o tráfego de rede está sendo direcionado. |
+| **`GPRESULT /R`** | Lista as políticas de grupo (GPOs). | Verificar quais políticas de domínio estão sendo aplicadas à máquina. |
 
-✔ Interface gráfica (GUI) simples e intuitiva
-✔ Execução de comandos nativos do Windows
-✔ Console interno com:
-    - Timestamp (data e hora)
-    - Separadores visuais entre comandos
-✔ Validação de:
-    - Endereço IP (IPv4)
-    - Porta TCP (1 a 65535)
-✔ Abertura de ferramentas externas:
-    - Prompt de Comando (CMD)
-    - Conexão de Área de Trabalho Remota (RDP)
+## ⚙️ Arquitetura e Decisões Técnicas
 
----------------------------------------------------------------------
-                      INTERFACE DO SISTEMA
----------------------------------------------------------------------
+* **Linguagem:** Python
+* **Interface:** PySide6 (`QMainWindow`)
+* **Execução Assíncrona:** A execução dos comandos de rede utiliza o módulo `QProcess`. Isso garante que a interface gráfica não congele (freeze) enquanto um comando demorado (como um `tracert`) está rodando em segundo plano.
+* **Saída de Dados:** Console utilizando `QTextEdit` em modo somente leitura.
 
-Campos de entrada:
-- IP       → Ex.: 8.8.8.8
-- Domínio  → Ex.: google.com
-- Porta    → Ex.: 443
+## 💻 Requisitos do Sistema
 
-Console:
-- Exibe a saída de todos os comandos
-- Somente leitura
-- Fonte otimizada para visualização
+* **Sistema Operacional:** Windows 10 ou superior (Projeto otimizado para ambiente Microsoft).
+* **Software:** Python 3.9+
+* **Dependências:** `PySide6`
 
----------------------------------------------------------------------
-                      COMANDOS DISPONÍVEIS
----------------------------------------------------------------------
+## 🎯 Casos de Uso
 
-[ PING ]
-Testa conectividade com um IP ou domínio.
-Uso comum: verificar se um servidor ou site responde.
+* Analistas Blue Team e operadores de SOC.
+* Equipes de Suporte Técnico e Help Desk.
+* Estudantes de Redes e Cibersegurança.
+* Ambientes corporativos para troubleshooting rápido.
 
-[ IPCONFIG /ALL ]
-Exibe todas as configurações de rede da máquina.
-IP, gateway, DNS, DHCP e adaptadores.
+## 🗺️ Roadmap (Melhorias Futuras)
 
-[ HOSTNAME ]
-Mostra o nome do computador local.
-Com IP informado, tenta resolução reversa (ping -a).
+- [ ] Implementar Tema Escuro (Dark Mode).
+- [ ] Exportação de logs de resultados para arquivo `.txt`.
+- [ ] Inclusão de novos comandos avançados de rede.
+- [ ] Aprimorar o tratamento de erros e exceções.
+- [ ] Criar um instalador estável executável (`.exe`).
+- [ ] Adaptar o código para uma versão multiplataforma no futuro (Linux/macOS).
 
-[ TRACERT ]
-Mostra o caminho que os pacotes percorrem até o destino.
-Usado para identificar gargalos ou falhas de rota.
+## 👨‍💻 Sobre o Autor
 
-[ TESTE DE PORTA – Test-NetConnection ]
-Testa se uma porta TCP está acessível.
-Exemplo prático: verificar se a porta 443 (HTTPS) está aberta.
-Não depende do Telnet instalado.
+**Kleberson Pastori** *Estudante de Engenharia de Software | Estagiário em Cibersegurança na AutoEver Brasil*
 
-[ NSLOOKUP ]
-Consulta DNS para resolução de nomes de domínio.
+Foco de estudo e atuação: Blue Team, SOC, Segurança Defensiva e Automação de Tarefas. Projeto desenvolvido para aprendizado, uso prático diário e composição de portfólio profissional.
 
-[ NETSTAT -AN ]
-Lista conexões ativas e portas em uso.
-Muito usado em análises de segurança.
+## 📄 Licença
 
-[ ARP -A ]
-Exibe a tabela ARP local (IP ↔ MAC).
-
-[ ROUTE PRINT ]
-Mostra a tabela de rotas do sistema.
-
-[ GPRESULT /R ]
-Lista políticas de grupo (GPOs) aplicadas à máquina.
-
-[ ABRIR CMD ]
-Abre o Prompt de Comando externamente.
-
-[ ABRIR RDP ]
-Abre o cliente de Conexão Remota (mstsc).
-
----------------------------------------------------------------------
-REQUISITOS DO SISTEMA
----------------------------------------------------------------------
-
-Sistema Operacional:
-- Windows 10 ou superior;
-
-Software:
-- Python 3.9 ou superior;
-- Biblioteca PySide6;
-
-Observação:
-Este projeto foi desenvolvido especificamente para Windows.
-
----------------------------------------------------------------------
-ARQUITETURA E DECISÕES TÉCNICAS
----------------------------------------------------------------------
-
-Linguagem:
-- Python
-
-Interface:
-- PySide6 (QMainWindow)
-
-Execução de comandos:
-- QProcess (assíncrono)
-
-Saída:
-- QTextEdit em modo somente leitura
-
->>> Benefício técnico:
->>> O uso do QProcess permite executar comandos do sistema sem
->>> travar a interface gráfica.
-
----------------------------------------------------------------------
-                          CASOS DE USO
----------------------------------------------------------------------
-
-- Suporte técnico e help desk;
-- Estudantes de redes e cibersegurança;
-- Ambientes corporativos;
-- Treinamento e laboratórios;
-- Analistas Blue Team / SOC;
-
----------------------------------------------------------------------
-                   MELHORIAS FUTURAS (ROADMAP)
----------------------------------------------------------------------
-
-[ ] Tema escuro;
-[ ] Exportação de logs para arquivo .txt;
-[ ] Novos comandos de rede;
-[ ] Melhor tratamento de erros;
-[ ] Versão multiplataforma (futuro);
-[ ] Interface instalavel e estavel. 
-
----------------------------------------------------------------------
-LICENÇA
----------------------------------------------------------------------
-
-Defina conforme necessidade (sugestão: MIT License).
-
----------------------------------------------------------------------
-SOBRE O AUTOR
----------------------------------------------------------------------
-
-Kleberson Pastori
-Estudante de Engenharia de Software
-Estagiário em Cibersegurança na AutoEver Brasil
-
-Foco em:
-- Blue Team
-- SOC
-- Segurança defensiva
-- Automação de tarefas de rede
-
-Projeto desenvolvido para aprendizado, uso prático e portfolio profissional.
+Este projeto está sob a licença [MIT](LICENSE).
