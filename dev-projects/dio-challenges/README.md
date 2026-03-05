@@ -43,8 +43,3 @@ node challenge-1.js
 node challenge-2.js
 node challenge-3.js
 Projeto desenvolvido por Kleberson Pastori para aprimoramento de lógica de programação e pensamento computacional.
-
-
-Com esses quatro repositórios (Incident Response, Automação em Python, Ferramenta de Rede com GUI e esse de Lógica JS) padronizados, o seu GitHub já demonstra um perfil técnico muito completo para as vagas de estágio que você está buscando.
-
-Você gostaria que eu te ajudasse a escrever um resumo profissional (a bio do GitHub) para colocar na página inicial do seu perfil, amarrando todas essas habilidades em um texto atrativo para recrutadores?
