@@ -1,68 +1,106 @@
-cyber-malicious-file-risk-analyzer (CLI)
+# 🛡️ Cyber Malicious File Risk Analyzer (CLI)
 
-Scanner simples de diretórios locais que lista arquivos com extensões potencialmente perigosas (.exe, .bat, .ps1, .vbs, .dll, .cmd). 
-Exibe banner em ASCII, mensagens coloridas e um resumo final.
+![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Interface](https://img.shields.io/badge/interface-CLI-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-🔍 O que faz
+Um scanner simples, rápido e visual de diretórios locais via linha de comando (CLI). O script percorre pastas do sistema e lista arquivos que possuem extensões frequentemente utilizadas como vetores de ataque ou scripts maliciosos (ex: `.exe`, `.bat`, `.ps1`, `.vbs`, `.dll`, `.cmd`).
 
-Percorre recursivamente pastas definidas no código.
-Identifica extensões suspeitas usando um set para busca O(1).
-Trata erros comuns (permissão e diretório inexistente).
-Mostra contagem total de arquivos encontrados.
+O projeto conta com uma interface amigável no terminal, exibindo um banner em ASCII, mensagens coloridas para alertas e um resumo final da varredura.
 
-✅ Requisitos
+## 🔍 O que a ferramenta faz
 
-*Python 3.8+
-*pip instalado
+* Percorre recursivamente as pastas definidas no código-fonte.
+* Identifica extensões suspeitas utilizando a estrutura de dados `set` para uma busca de complexidade $O(1)$, garantindo alta performance.
+* Trata exceções e erros comuns (como falta de permissão de leitura ou diretórios inexistentes).
+* Exibe a contagem total de arquivos suspeitos encontrados ao final da execução.
 
-Dependências Python
-Plain Textpyfiglet>=0.8.post1Show more lines
+## ✅ Requisitos
+
+* **Python:** 3.8 ou superior.
+* **Gerenciador de pacotes:** `pip`.
+
+**Dependências Python:**
+```text
+pyfiglet>=0.8.post1
+
 📦 Instalação
-Plain Textgit clone https://github.com/<seu-usuario>/<seu-repo>.gitcd <seu-repo># (Opcional) ambiente virtualpython -m venv .venv# Windows.venv\Scripts\activate# Linux/macOSsource .venv/bin/activatepip install -r requirements.txt``Show more lines
+Abra o seu terminal e execute os comandos abaixo para clonar o repositório e preparar o ambiente:
 
-Se não usar requirements.txt: pip install pyfiglet
+Bash
+# 1. Clone o repositório
+git clone [https://github.com/SEU-USUARIO/SEU-REPO.git](https://github.com/SEU-USUARIO/SEU-REPO.git)
+cd SEU-REPO
+
+# 2. Crie um ambiente virtual (Recomendado)
+python -m venv .venv
+
+# 3. Ative o ambiente virtual
+# No Windows:
+.venv\Scripts\activate
+# No Linux/macOS:
+source .venv/bin/activate
+
+# 4. Instale as dependências
+pip install -r requirements.txt
+(Caso prefira rodar sem o arquivo de requisitos, basta executar pip install pyfiglet).
 
 🛠️ Configuração
+Antes de rodar, abra o arquivo Analise_potencial_risco_extensao_Python.py e edite os caminhos-alvo no topo do script para refletir o seu usuário e sistema operacional.
 
-Edite os caminhos-alvo no topo do arquivo para refletir seu usuário/sistema:
-PythonPASTA  = r"C:\Users\<SEU_USUARIO>\Downloads"PASTA1 = r"C:\Users\<SEU_USUARIO>\Documents"PASTA2 = r"C:\Users\<SEU_USUARIO>\Desktop"Show more lines
+Ajuste de Diretórios (Exemplo Windows):
 
-Para alterar as extensões monitoradas:
-PythonEXT_SUSPEITAS = {".exe", ".bat", ".ps1", ".vbs", ".dll", ".cmd"}``Show more lines
+Python
+PASTA  = r"C:\Users\<SEU_USUARIO>\Downloads"
+PASTA1 = r"C:\Users\<SEU_USUARIO>\Documents"
+PASTA2 = r"C:\Users\<SEU_USUARIO>\Desktop"
+(Se estiver rodando em ambiente Linux, lembre-se de alterar os caminhos para o padrão Unix, como /home/usuario/Downloads).
 
+Ajuste de Extensões Monitoradas:
+Para adicionar ou remover extensões do radar do scanner, edite o conjunto (set) abaixo:
+
+Python
+EXT_SUSPEITAS = {".exe", ".bat", ".ps1", ".vbs", ".dll", ".cmd"}
 ▶️ Uso
-Execute o script:
-Shell# Windows / Linux / macOSpython Analise_potencial_risco_extensao_Python.pyShow more lines
-Saída esperada (exemplo):
+Com o ambiente ativado e configurado, execute o script:
+
+Bash
+python Analise_potencial_risco_extensao_Python.py
+Saída Esperada:
+
+Plaintext
 🔍 Verificando arquivos suspeitos em: C:\Users\<USUARIO>\Downloads
 🔍 Verificando arquivos suspeitos em: C:\Users\<USUARIO>\Documents
 🔍 Verificando arquivos suspeitos em: C:\Users\<USUARIO>\Desktop
-____________________________________________________________________________________________________
+________________________________________________________________________________
+
 ⚠️ Arquivo(s) potencialmente perigoso encontrado em 'DOWNLOADS': setup.exe
 ⚠️ Arquivo(s) potencialmente perigoso encontrado em 'DESKTOP': script.ps1
-____________________________________________________________________________________________________
+________________________________________________________________________________
 
 Resumo: 2 arquivo(s) potencialmente perigoso(s) encontrado(s).
-
-📄 Estrutura
+📄 Estrutura do Repositório
+Plaintext
 .
-├── Analise_potencial_risco_extensao_Python.py  # script principal (scanner)
-└── requirements.txt                             # dependências (pyfiglet)
+├── Analise_potencial_risco_extensao_Python.py  # Script principal do scanner
+└── requirements.txt                            # Dependências (pyfiglet)
+🚧 Limitações e Observações
+Não é um antivírus: A ferramenta funciona exclusivamente baseada em extensões de arquivos, ela não realiza análise de conteúdo, assinatura, comportamento ou hash.
 
-🚧 Limitações e observações
+Falsos Positivos: É normal e esperado que arquivos totalmente legítimos sejam sinalizados apenas por possuírem extensões como .exe ou .dll.
 
-Não é um antivírus: apenas sinaliza por extensão; não faz análise de conteúdo.
-Falsos positivos: arquivos legítimos podem ser marcados pela extensão.
-Permissões: alguns diretórios podem exigir privilégios elevados.
-Plataforma: caminhos padrão estão voltados a Windows; ajuste para Linux/macOS conforme necessário.
+Permissões: A varredura em diretórios restritos do sistema raiz pode exigir execução com privilégios elevados (Administrador/Root).
 
-🗺️ Roadmap (idéas rápidas)
+🗺️ Roadmap (Melhorias Futuras)
+[ ] Implementar leitura de pastas via argumentos CLI (--paths) utilizando a biblioteca argparse.
 
- Ler pastas via argumentos CLI (--paths), com argparse.
- Exportar relatório em CSV/JSON.
- Configurar extensões via arquivo config.yaml.
- Logs estruturados e nível de verbosidade (-v, --quiet).
- Pipeline de CI com lint/teste.
- 
- 📜 Licença
-MIT License © 2026 Kleberson Pastori
+[ ] Adicionar suporte à exportação de relatórios em .csv ou .json.
+
+[ ] Mover a configuração de extensões para um arquivo externo config.yaml.
+
+[ ] Criar logs estruturados e níveis de verbosidade (ex: -v, --quiet).
+
+[ ] Configurar um Pipeline de CI simples com Lint e testes automatizados.
+
+📜 Licença e Autor
+Este projeto está licenciado sob a MIT License © 2026 Kleberson Pastori.
