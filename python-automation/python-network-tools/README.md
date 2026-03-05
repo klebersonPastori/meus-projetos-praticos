@@ -67,6 +67,3 @@ Em vez de digitar comandos manualmente no Prompt de Comando, o usuário executa 
 
 Foco de estudo e atuação: Blue Team, SOC, Segurança Defensiva e Automação de Tarefas. Projeto desenvolvido para aprendizado, uso prático diário e composição de portfólio profissional.
 
-## 📄 Licença
-
-Este projeto está sob a licença [MIT](LICENSE).
