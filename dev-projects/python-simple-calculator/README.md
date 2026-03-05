@@ -104,6 +104,3 @@ Interrupção pelo Usuário (KeyboardInterrupt): Caso o usuário pressione Ctrl+
 Este projeto está licenciado sob a MIT License © 2026 Kleberson Pastori.
 
 
-No seu *Roadmap*, você mencionou a implementação de testes unitários com o `pytest`. Essa é uma habilidade valiosíssima e muito cobrada em processos seletivos para desenvolvimento. 
-
-Você gostaria que eu escrevesse o arquivo de testes (`test_calculadora.py`) validando as fu
