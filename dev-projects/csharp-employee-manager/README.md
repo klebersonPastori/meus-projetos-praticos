@@ -1,50 +1,45 @@
-csharp-employee-manager 2025 - v1.0.1  
-Desenvolvido por Kleberson Pastori.
+# 📦 C# Employee Manager (Controle de Cestas)
 
-========================================================================
---------------------------SOBRE O SISTEMA-------------------------------
-========================================================================
+![C#](https://img.shields.io/badge/C%23-Programming-blue.svg)
+![OS](https://img.shields.io/badge/OS-Windows-lightgrey.svg)
+![Version](https://img.shields.io/badge/Version-1.0.1-brightgreen.svg)
+![Compliance](https://img.shields.io/badge/Compliance-LGPD-success.svg)
 
-Este software é um aplicativo desenvolvido para controle e registro da entrega de cestas aos colaboradores para uma empresa fictícia.
-Através da leitura do número do crachá, o sistema exibe os dados do funcionário, o tipo de cesta associada e o status de retirada.
+Um aplicativo desktop desenvolvido em C# focado no controle, registro e auditoria da entrega de cestas de benefícios aos colaboradores de uma empresa. 
 
-Principais funcionalidades:
-- Consulta rápida por número de crachá;
-- Exibição de dados do colaborador e status da cesta;
-- Registro de retirada com data e hora;
-- Exportação de relatório;
+Através da leitura simples do número do crachá, o sistema exibe instantaneamente os dados do funcionário, o tipo de cesta associada ao seu perfil e o status atual de retirada. É um projeto prático que resolve um problema real de logística e gestão de Recursos Humanos.
 
-=======================================================================
-                       *INSTALAÇÃO E EXECUÇÃO*
-=======================================================================
+## ✨ Principais Funcionalidades
 
-Ao extrair os arquivos, contém duas opções para uso do programa:
+* **Consulta Rápida:** Busca ágil de colaboradores utilizando o número de identificação do crachá.
+* **Painel de Informações:** Exibição clara e objetiva dos dados do funcionário e do status da sua cesta.
+* **Controle de Retirada:** Registro exato de saída com carimbo de data e hora (*timestamp*), garantindo a rastreabilidade.
+* **Exportação de Relatórios:** Geração de arquivos de relatório para auditoria e controle de estoque do RH.
 
-1. **Instalador (setup.exe):**
-2. **Executável Direto (Consulta_Funcionário_v1.0.1.msi):**
-   - Instalação tradicional no computador (os 2 funcionam em Windows).
-   - Cria atalhos no Menu Iniciar e Área de Trabalho.
+## 🚀 Instalação e Execução
 
-Escolha a opção que melhor se adapta à sua necessidade.
+O projeto foi empacotado para facilitar a distribuição e instalação em ambientes corporativos Windows. Ao baixar a *release* ou extrair os arquivos originais, você terá duas opções para instalar o sistema:
 
-======================================================================
-          🔐LGPD – LEI GERAL DE PROTEÇÃO DE DADOS
-======================================================================
+1. **Instalador (`setup.exe`):** Assistente passo a passo padrão.
+2. **Executável Direto (`Consulta_Funcionário_v1.0.1.msi`):** Pacote do Windows Installer, ideal para instalações tradicionais.
 
-Este software foi desenvolvido em conformidade com a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados - LGPD).
-Nenhum dado pessoal é compartilhado com terceiros ou armazenado em servidores externos. 
-Todas as informações são utilizadas exclusivamente para fins educacionais e fictícios.
+*Ambas as opções criam automaticamente atalhos no Menu Iniciar e na Área de Trabalho para facilitar o acesso.*
 
-*O desenvolvedor se compromete a respeitar a privacidade e a segurança dos dados dos usuários, garantindo que o sistema opere dentro das diretrizes legais vigentes.
+## 🔐 Privacidade e Segurança (LGPD)
 
+Como a segurança da informação é um pilar essencial do desenvolvimento, este software foi projetado em conformidade com a **Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD)**.
 
-=====================================================================
-                            📞SUPORTE
-=====================================================================
+* **Ambiente de Testes:** O banco de dados padrão utiliza informações exclusivamente para fins educacionais e de demonstração.
+* **Privacidade Local:** Nenhum dado pessoal é compartilhado com terceiros ou armazenado em servidores externos não autorizados.
+* **Compromisso:** A arquitetura do sistema garante que, ao ser operado com dados reais de colaboradores, o tratamento das informações ocorra estritamente dentro das diretrizes legais vigentes.
 
-Em caso de dúvidas, sugestões ou suporte técnico, entre em contato com:
+## 👨‍💻 Autor e Suporte
 
-**Kleberson Pastori**  
-📨 E-mail: kleber-pastori@hotmail.com
-📅 Versão: 1.0.1  
-📆 Data final: Novembro/2025
+Desenvolvido por **Kleberson Pastori** (Novembro/2025).
+
+Em caso de dúvidas, sugestões de melhoria ou necessidade de suporte técnico, entre em contato:
+* 📨 **E-mail:** kleber-pastori@hotmail.com
+* 📅 **Versão Atual:** 1.0.1
+
+---
+*Projeto desenvolvido para fins educacionais, resolução de problemas corporativos e composição de portfólio profissional.*
