@@ -1,0 +1,327 @@
+/* ========================================================= 
+ TEMAS GLOBAIS E PARÂMETROS 
+========================================================= */
+:root {
+  /* Cores */
+  --red: #ff2a2a;
+  --red-soft: #ff8080;
+  --ink: #000;
+  --text: #fff;
+  --hud: #ffdedc;
+
+  /* Tamanho do jogo */
+  --game-w: 700px;
+  --game-h: 360px;
+
+  /* Animações */
+  --jump-time: 0.75s;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* ===== Layout ===== */
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: "Courier New", monospace;
+  color: var(--text);
+  user-select: none;
+
+  /* Wallpaper + "escuro" */
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("../assets/img/825453.jpg")
+    no-repeat center / cover fixed;
+}
+
+body {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* ========================================================= 
+ HEADER 
+========================================================= */
+.site-header { text-align: center; margin-top: 20px; }
+.site-header h1 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--red);
+  text-shadow: 0 0 8px red;
+}
+.site-header .submark { color: white; }
+.subtitle { opacity: 0.85; }
+
+/* ========================================================= 
+ ÁREA DO JOGO 
+========================================================= */
+
+/* ===== Centralizando ===== */
+.stage {
+  min-height: 0;             /* evita estourar a linha do grid */
+  display: grid;
+  place-items: center;       /* centraliza vertical e horizontal */
+  padding-block: 20px 24px;  
+  position: relative;
+  z-index: 2;                /* acima do fundo e das cinzas */
+}
+
+/* empilha jogo + HUD + crédito */
+.game-stack {
+  display: grid;
+  justify-items: center;
+  gap: 12px;                 /* espaço entre #game, #hud e #dev-credit */
+  max-width: var(--game-w);
+  width: 100%;
+  /* sem max-height para não “comer” os créditos */
+}
+
+#game {
+  width: var(--game-w);
+  height: var(--game-h);
+  margin: 0 auto;
+  border: 3px solid var(--red);
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url("../assets/img/pixel-ceu.avif") center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+}
+
+#game:focus-visible {
+  box-shadow: 0 0 0 3px #ffffff66, 0 0 0 6px var(--red);
+}
+
+/* START HINT */
+#startHint {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 22px;
+  text-align: center;
+  text-shadow: 0 0 6px var(--red);
+  z-index: 10;
+}
+#startHint.hidden { display: none; }
+
+/* ========================================================= 
+ PERSONAGEM
+ - Movimento vertical controlado por JS (bottom)
+========================================================= */
+#mikeWrap {
+  position: absolute;
+  left: 40px; /* X fixo */
+  bottom: 0;  /* Y */
+  width: 32px;
+  height: 48px;
+  transition: bottom 0.05s linear; /* suaviza o render */
+}
+#mikeSprite {
+  width: 48px;
+  height: 72px;
+  image-rendering: pixelated; /* 8bit */
+}
+
+/* ========================================================= 
+ MONSTROS 
+========================================================= */
+.monster {
+  position: absolute;
+  bottom: 0;
+  right: -60px; /* nasce fora da tela */
+  font-size: 30px; /* tamanho dos emojis */
+  animation: moveLeft 4.2s linear forwards;
+  will-change: transform, right;
+}
+.monster.alt { color: var(--red-soft); }
+
+@keyframes moveLeft {
+  from { transform: translateX(0); }
+  /* 120px: margem extra pra sair da tela */
+  to { transform: translateX(calc(-1 * (var(--game-w) + 120px))); }
+}
+
+/* ========================================================= 
+ HUD 
+========================================================= */
+#hud {
+  width: var(--game-w);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  color: var(--hud);
+  font-size: 16px;
+}
+
+/* ========================================================= 
+ OVERLAY DE GAME OVER 
+========================================================= */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10; /* Sobrepor tudo */
+}
+#overlay.show { display: flex; }
+
+.panel {
+  background: #1a0000;
+  border: 3px solid var(--red);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px red;
+  color: #ffdad6;
+}
+.panel button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: var(--red);
+  border: none;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+.panel button:hover { filter: brightness(1.2); }
+
+/* ========================================================= 
+ Animação do Background (cinzas caindo) 
+========================================================= */
+.bg-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../assets/img/825453.jpg") center/cover no-repeat; /* ajuste o path se necessário */
+  z-index: 0;          /* fundo base (na frente do fundo do body) */
+  overflow: hidden;
+  isolation: isolate;  /* isola blends desta pilha */
+  pointer-events: none;
+}
+.ashes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;          /* acima do fundo e abaixo dos raios */
+}
+.ashes span {
+  position: absolute;
+  top: -20px;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 190, 140, 0.7);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0%   { transform: translateY(0) translateX(0);   opacity: 1; }
+  100% { transform: translateY(110vh) translateX(30px); opacity: 0.2; }
+}
+
+/* ========================================================= 
+ Efeitos: raios e clarão 
+========================================================= */
+.fx-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;          /* acima do jogo/cinzas, abaixo do overlay */
+  isolation: isolate;  /* Isola vazamentos*/
+}
+.lightning-flash {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen; /* vermelho acende sobre o que estiver abaixo, dentro da isolate */
+  opacity: 0;
+  animation: flash-fade 420ms ease-out forwards;
+  z-index: 1;
+}
+.lightning-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at var(--x, 50%) var(--y, 50%),
+      rgba(255, 40, 40, 0.25),
+      rgba(255, 0, 0, 0) 40%
+    );
+  filter: blur(20px);
+  opacity: 0;
+  animation: glow-pulse 480ms ease-out forwards;
+  z-index: 2;
+}
+@keyframes flash-fade {
+  0% { opacity: 0; transform: scale(1); }
+  10% { opacity: 1; transform: scale(1.01); }
+  35% { opacity: 0.85; }
+  60% { opacity: 0.4; }
+  100% { opacity: 0; }
+}
+@keyframes glow-pulse {
+  0% { opacity: 0; }
+  15% { opacity: 0.55; }
+  45% { opacity: 0.35; }
+  100% { opacity: 0; }
+}
+
+/* ========================================================= 
+ RODAPÉ: crédito do desenvolvedor 
+========================================================= */
+#dev-credit {
+  width: var(--game-w);
+  margin: 8px auto 0 auto; /* centralizado horizontalmente */
+  text-align: center;
+  color: var(--hud);
+  font-size: 14px;
+  opacity: 0.9;
+  text-shadow: 0 0 6px rgba(255, 0, 0, 0.35);
+  justify-self: center;     
+}
+#dev-credit strong { color: var(--red); }
+
+/* ====== Versão MOBILE (Não testada!) ====== */
+@media (max-width: 700px) {
+  :root {
+    --game-w: 95vw;  /* largura 95% da tela */
+    --game-h: 300px; /* redução altura p/ mobile */
+  }
+  #mikeSprite {
+    width: 40px;
+    height: 60px;
+  }
+  #hud {
+    font-size: 14px;
+  }
+  #dev-credit {
+    font-size: 12px;
+  }
+}
+
+/* GARANTE que o cabeçalho sempre fique acima do fundo */
+.site-header {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* A área do jogo também precisa estar acima das cinzas */
+.stage {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* As cinzas continuam acima do wallpaper e abaixo do header/jogo */
+.bg-wrapper {
+  z-index: 0 !important;
+}

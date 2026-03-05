@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HAWKINS RUNNER — 8bit Game</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- =========================================================
+       HEADER
+  ========================================================= -->
+  <header class="site-header">
+    <h1>HAWKINS RUNNER <span class="submark">Stranger Things</span></h1>
+    <p class="subtitle">Game dedicado á Série Stranger Things da Netflix.</p>
+  </header>
+
+  <!-- Camada de efeitos (raios/flash) -->
+  <div class="fx-layer" aria-hidden="true"></div>
+
+  <!-- Background animado (cinzas) -->
+  <div class="bg-wrapper">
+    <div class="ashes"></div>
+  </div>
+
+  <!-- =========================================================
+                             JOGO
+  ========================================================= -->
+<main class="stage">
+  <div class="game-stack">
+    <!-- JOGO -->
+    <div id="game" aria-label="Área do jogo" tabindex="0">
+      <!-- Tela inicial -->
+      <div id="startHint" role="dialog" aria-live="polite">
+        Clique ou aperte <br /><br />
+        <strong>ESPAÇO</strong> <br /><br />
+        para iniciar
+      </div>
+
+      <!-- Jogador (sprite 8-bit) -->
+      <div id="mikeWrap" aria-label="Jogador: Will">
+        <svg
+          id="mikeSprite"
+          viewBox="0 0 16 24"
+          xmlns="http://www.w3.org/2000/svg"
+          shape-rendering="crispEdges"
+          aria-hidden="true"
+        >
+          <rect x="5" y="2" width="6" height="5" fill="#f4d7b6" />
+          <rect x="4" y="1" width="8" height="2" fill="#3a1a1a" />
+          <rect x="4" y="3" width="1" height="3" fill="#3a1a1a" />
+          <rect x="11" y="3" width="1" height="3" fill="#3a1a1a" />
+          <rect x="7" y="7" width="2" height="1" fill="#f4d7b6" />
+          <rect x="4" y="8" width="8" height="7" fill="#a10c0c" />
+          <rect x="7" y="8" width="2" height="3" fill="#2b2b2b" />
+          <rect x="3" y="9" width="2" height="5" fill="#a10c0c" />
+          <rect x="11" y="9" width="2" height="5" fill="#a10c0c" />
+          <rect x="3" y="14" width="2" height="1" fill="#f4d7b6" />
+          <rect x="11" y="14" width="2" height="1" fill="#f4d7b6" />
+          <rect x="4" y="15" width="3" height="6" fill="#1e3a6d" />
+          <rect x="9" y="15" width="3" height="6" fill="#1e3a6d" />
+          <rect x="4" y="21" width="3" height="2" fill="#111" />
+          <rect x="9" y="21" width="3" height="2" fill="#111" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" aria-label="Cabeçalho do jogo">
+      <div id="score" aria-live="polite">SCORE: 0</div>
+      <div id="tips">Pressione[ESPAÇO ou CLIQUE] para pular e fugir dos monstros!</div>
+    </div>  
+	  <!--desenvolvedor-->
+  <footer id="dev-credit" aria-label="Crédito do desenvolvedor">
+    Desenvolvido por <strong>Kleberson Pastori</strong>
+    </footer>
+  </div>
+</main>
+
+<!-- Overlay: Game Over (permanece fora para cobrir tudo) -->
+<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="goTitle">
+  <div class="panel">
+    <h2 id="goTitle">VECNA TE PEGOU!FIM DE JOGO!</h2>
+    <button id="retry" type="button" aria-label="Jogar novamente">
+      Jogar novamente
+    </button>
+  </div>
+</div>
+
+  <!-- Áudio (tocado ao comando do usuário) -->
+  <audio id="bgm" preload="auto" loop>
+    <source src="assets/audio/st-8bit.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio HTML5.
+  </audio>
+
+  <!-- JS principal -->
+  <script src="js/game.js" defer></script>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack: Factory strike - Local</title>
+    <style>
+        /* --- VARIÁVEIS GLOBAIS (CSS VARIABLES) ---
+           Facilita a manutenção de cores e temas em um único lugar.
+        */
+        :root {
+            --hud-text: #00ffcc;
+            --hud-bg: rgba(0, 0, 0, 0.5);
+            --primary-bg: #333;
+        }
+
+        /* Configuração base para garantir tela cheia e sem barras de rolagem */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            /* Imagem de fundo local na pasta imgs */
+            background-image: url('imgs/bg.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            font-family: 'Segoe UI', sans-serif;
+            user-select: none; /* Impede seleção de texto */
+            cursor: none;      /* Esconde o cursor padrão do sistema */
+            perspective: 1200px; /* Adiciona profundidade 3D para elementos transformados */
+        }
+
+        /* --- CAMADA DE CENÁRIO (OBSTÁCULOS) --- */
+        #map-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* Permite clicar através dos obstáculos */
+            z-index: 5;
+        }
+
+        /* Estilização das caixas/obstáculos para dar profundidade ao cenário */
+        .obstacle-box {
+            position: absolute;
+            width: 140px; height: 120px;
+            background: repeating-linear-gradient(45deg, #444, #444 10px, #333 10px, #333 20px);
+            border: 2px solid #222;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
+        }
+        
+        .obs-1 { 
+            bottom: 15%; left: 15%; 
+            z-index: 50; /* Define a ordem de empilhamento (quem fica na frente de quem) */
+        }
+        .obs-1::before { 
+            content: 'GLOVIS'; 
+            color: #777; font-weight: bold; 
+            position: absolute; top: 10px; left: 10px; 
+            font-family: monospace; 
+        }
+
+        .obs-2 {
+            bottom: 20%; right: 20%;
+            width: 160px; height: 100px;
+            background: #5d4037;
+            border: 1px solid #3e2723;
+            z-index: 40;
+        }
+        .obs-2::after {
+            content: ''; position: absolute; top: -20px; left: 20px;
+            width: 120px; height: 20px; background: #6d4c41;
+            transform: skewX(40deg); /* Efeito 3D simples na tampa */
+        }
+
+        /* --- INTERFACE DO USUÁRIO (HUD) --- */
+        #game-ui {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1000;
+        }
+
+        .hud-text {
+            font-family: 'Consolas', monospace;
+            color: var(--hud-text);
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute; bottom: 30px;
+            background: var(--hud-bg);
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--hud-text);
+        }
+
+        #health-panel { left: 30px; border-color: #ff3333; color: #ff3333; }
+        #ammo-panel { right: 30px; border-color: #ffff00; color: #ffff00; text-align: right; }
+        #score-panel { top: 30px; left: 30px; bottom: auto; border-color: #00ff00; color: #00ff00; }
+        #timer-panel { top: 30px; left: 50%; transform: translateX(-50%); bottom: auto; border: none; background: transparent; font-size: 40px; color: white; }
+
+        /* --- TELAS DE MENU (OVERLAY) --- */
+        #overlay {
+            position: absolute; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 2000; color: white; text-align: center; 
+            pointer-events: auto; cursor: default;
+        }
+        #overlay h1 { font-size: 60px; color: #00ffcc; text-transform: uppercase; margin-bottom: 10px; }
+        #overlay p { font-size: 20px; color: #eee; margin-bottom: 20px; max-width: 600px; line-height: 1.5; }
+        
+        .btn {
+            margin-top: 20px; padding: 15px 40px; font-size: 20px;
+            background: #008080; color: white; border: 2px solid #00aaaa;
+            cursor: pointer; font-weight: bold; transition: 0.2s;
+        }
+        .btn:hover { background: #00aaaa; }
+
+        /* --- ÁREA DE JOGO E INIMIGOS --- */
+        #game-area {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+        }
+
+        .enemy {
+            position: absolute;
+            width: 80px; height: 170px;
+            cursor: none;
+            transition: transform 0.1s; /* Suaviza movimento leve */
+        }
+        
+        /* Construção do Inimigo com CSS puro (formas geométricas) */
+        .e-head {
+            position: absolute; top: 0; left: 20px;
+            width: 40px; height: 50px;
+            background: #dcb486; border-radius: 8px; z-index: 3;
+        }
+        /* Cabelo */
+        .e-head::before {
+            content: ''; position: absolute; top: -5px; left: 0;
+            width: 40px; height: 15px; background: #222; border-radius: 5px 5px 0 0;
+        }
+
+        /* Corpo (Uniforme Laranja/Fabril) */
+        .e-body {
+            position: absolute; top: 45px; left: 5px;
+            width: 70px; height: 75px;
+            background: #fc7100; 
+            border-radius: 10px 10px 0 0; z-index: 2;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.753);
+        }
+        /* Detalhe da gola */
+        .e-body::before {
+            content: ''; position: absolute; top: 0; left: 20px;
+            width: 30px; height: 15px;
+            border-bottom: 2px solid #feffff;
+            background: #ff9100;
+            transform: skewX(-5deg);
+        }
+
+        .e-legs {
+            position: absolute; top: 110px; left: 5px;
+            width: 70px; height: 60px;
+            background: #333;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 55% 100%, 50% 30%, 45% 100%, 10% 100%);
+            z-index: 1;
+        }
+
+        .e-gun {
+            position: absolute; top: 75px; right: -15px;
+            width: 35px; height: 10px; background: #111;
+        }
+        
+        .enemy-timer {
+            position: absolute; bottom: -10px; left: 5px; width: 70px; height: 5px;
+            background: #ff0000; border: 1px solid white;
+        }
+
+        /* --- ARMA E ANIMAÇÕES --- */
+        #weapon-container {
+            position: fixed;
+            bottom: -20px;
+            left: 50%;
+            /* Estado inicial */
+            transform: translateX(-50%) rotateX(0deg) rotateY(0deg);
+            width: 600px;
+            height: 500px;
+            pointer-events: none;
+            z-index: 1500;
+            /* Cubic-bezier para dar peso ao movimento da arma */
+            transition: transform 0.08s cubic-bezier(0.1, 0.5, 0.5, 1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transform-origin: 50% 100%; /* Pivô na base */
+        }
+
+        #weapon-img {
+            width: auto; height: 100%; max-height: 480px;
+            filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8));
+            display: block;
+        }
+
+        /* SVG Fallback (caso a imagem não carregue) */
+        #weapon-svg {
+            display: none; 
+            width: 100%; height: 100%;
+            filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.8));
+        }
+
+        /* Keyframes para recuo (tiro) e recarga */
+        .recoil { animation: recoilAnim 0.1s ease-out; }
+        @keyframes recoilAnim {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.05) translateY(-25px) rotate(-2deg); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        .reloading-anim #weapon-container { animation: reloadAnim 1.5s ease-in-out; }
+        .reloading-anim img, .reloading-anim svg { animation: reloadAnim 1.5s ease-in-out; }
+        
+        @keyframes reloadAnim {
+            0% { transform: translateY(0); }
+            20% { transform: translateY(300px); } /* Abaixa a arma */
+            80% { transform: translateY(300px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Clarão do disparo */
+        #muzzle-flash {
+            position: absolute;
+            bottom: 350px; 
+            left: 20%; /* Ajuste fino de posição */
+            transform: translateX(-50%);
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, #fff 10%, #ffaa00 40%, transparent 70%);
+            opacity: 0; mix-blend-mode: screen; pointer-events: none;
+            z-index: 1600;
+        }
+        .flash-active { animation: flash 0.05s linear; }
+        @keyframes flash { 0% { opacity: 1; transform: translateX(-50%) scale(1.2) rotate(45deg); } 100% { opacity: 0; } }
+
+        /* Mira (Crosshair) */
+        #crosshair {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; z-index: 2000;
+        }
+        .ch-part { position: absolute; background: #00ffcc; box-shadow: 0 0 3px #000; }
+        .ch-h { width: 30px; height: 2px; top: 14px; left: 0; }
+        .ch-v { width: 2px; height: 30px; top: 0; left: 14px; }
+
+        /* Tela de dano (flash vermelho) */
+        #damage-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1200; transition: background 0.1s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ELEMENTOS VISUAIS -->
+    <div id="crosshair">
+        <div class="ch-part ch-h"></div>
+        <div class="ch-part ch-v"></div>
+    </div>
+
+    <div id="damage-screen"></div>
+
+    <div id="map-layer">
+        <div class="obstacle-box obs-1"></div>
+        <div class="obstacle-box obs-2"></div>
+    </div>
+
+    <div id="game-ui">
+        <div id="health-panel" class="hud-text">lIFE: <span id="hp-val">100</span></div>
+        <div id="timer-panel" class="hud-text"><span id="time-val">00</span></div>
+        <div id="score-panel" class="hud-text">PTS: <span id="score-val">0</span></div>
+        <div id="ammo-panel" class="hud-text">
+            <span id="ammo-val">12</span> / ∞<br>
+            <span style="font-size:14px; color:#aaa">PISTOLA </span>
+        </div>
+    </div>
+
+    <div id="overlay">
+        <h1>🚨ALERTA NA FÁBRICA🚨</h1>
+        <p>Perceberam que você entrou armado na empresa. Agora todos da produção estão atrás de você, MATE-OS!☠️<br>
+           Mire com o MOUSE. Clique com o botão <U><strong>ESQUERDO</strong></U> para atirar.<br>
+           Clique com o <U><strong>DIREITO</strong></U> para recarregar.</p>
+        <button class="btn" onclick="game.start()">INICIAR MASSACRE</button>
+        <P><i>Created by Kleberson Pastori</i></P>
+    </div>
+
+    <div id="game-area"></div>
+
+    <div id="weapon-container">
+        <div id="muzzle-flash"></div>
+        
+        <!-- Carrega imagem local da pasta 'imgs' -->
+        <img id="weapon-img" 
+             src="imgs/arma.png" 
+             alt="Arma Personalizada"
+             onerror="console.log('arma.png não encontrado. Usando fallback.'); this.style.display='none'; document.getElementById('weapon-svg').style.display='block';">
+        
+        <!-- Arma desenhada via SVG (Fallback) -->
+        <svg id="weapon-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="metalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#333;stop-opacity:1" />
+                    <stop offset="20%" style="stop-color:#555;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#222;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M250,400 L350,250 L500,300 L500,400 Z" fill="#151515" /> 
+            <path d="M330,260 Q300,240 290,250 L270,270 Q260,290 280,310 L320,320 Z" fill="#cfa070" />
+            <path d="M150,210 L320,210 L320,250 L150,250 Z" fill="url(#metalGrad)" stroke="#111" stroke-width="2"/>
+            <rect x="150" y="240" width="170" height="10" fill="#111" opacity="0.5"/>
+            <path d="M310,250 L310,300 L270,310 L260,250 Z" fill="#1a1a1a"/>
+            <path d="M260,250 L260,280 L280,280" fill="none" stroke="#222" stroke-width="3"/>
+            <path d="M275,255 Q270,265 275,270" stroke="#000" stroke-width="3" fill="none"/>
+            <rect x="150" y="205" width="5" height="5" fill="#0f0"/>
+            <rect x="315" y="205" width="5" height="5" fill="#0f0"/>
+        </svg>
+    </div>
+
+    <script>
+        /**
+         * SISTEMA DE ÁUDIO
+         * Gerencia efeitos sonoros usando HTML5 Audio para compatibilidade local
+         * e AudioContext para efeitos sintéticos caso falte arquivo.
+         */
+        const AudioSys = {
+            ctx: null,
+
+            init: function() {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+            },
+            
+            // Reproduz som ambiente ao spawnar inimigo (pasta audio)
+            playOi: function() {
+                const audio = new Audio('audio/oi.mp3');
+                audio.volume = 0.1; // Volume muito baixo para não ofuscar o tiro
+                audio.play().catch(e => {
+                    // Captura erro silenciosamente se o arquivo não existir
+                });
+            },
+
+            // Função: Toca "mk.mp3" (Efeito Especial de Killstreak) - pasta audio
+            playMk: function() {
+                const audio = new Audio('audio/mk.mp3');
+                audio.volume = 1.0; // Volume alto para destaque
+                audio.play().catch(e => {
+                    console.log("mk.mp3 não encontrado");
+                });
+            },
+
+            // Toca som de tiro com alta prioridade e fallback - pasta audio
+            playShootSound: function() {
+                // Cria nova instância para permitir sobreposição de sons (tiro rápido)
+                const audio = new Audio('audio/som.mp3');
+                audio.volume = 1.0; // Volume máximo
+                
+                audio.play()
+                    .then(() => {
+                        // Sucesso: arquivo local reproduzido
+                    })
+                    .catch(error => {
+                        // Erro: arquivo não existe ou bloqueado, usa sintetizador
+                        this.playSynthShoot();
+                    });
+            },
+            
+            // Sintetizador de áudio (gera som via código)
+            playSynthShoot: function() {
+                if (!this.ctx) return;
+                // Garante que o contexto de áudio esteja ativo
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                const t = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                // Configuração da onda sonora para parecer um tiro (dente de serra)
+                osc.type = 'sawtooth'; 
+                osc.frequency.setValueAtTime(150, t);
+                osc.frequency.exponentialRampToValueAtTime(0.01, t + 0.15);
+                
+                // Filtro passa-baixa para abafar o som
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3000, t);
+                filter.frequency.exponentialRampToValueAtTime(100, t + 0.15);
+
+                gain.gain.setValueAtTime(0.5, t);
+                gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(t + 0.2);
+            },
+
+            playReload: function() {
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                
+                // Som mecânico de recarga (dois tons)
+                const t = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(400, t);
+                gain.gain.setValueAtTime(0.1, t);
+                gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(t); osc.stop(t+0.1);
+
+                setTimeout(() => {
+                    const osc2 = this.ctx.createOscillator();
+                    const gain2 = this.ctx.createGain();
+                    osc2.type = 'sawtooth';
+                    osc2.frequency.setValueAtTime(600, t+0.8);
+                    gain2.gain.setValueAtTime(0.1, t+0.8);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, t+1.0);
+                    osc2.connect(gain2); gain2.connect(this.ctx.destination);
+                    osc2.start(t+0.8); osc2.stop(t+1.0);
+                }, 800);
+            }
+        };
+
+        /**
+         * LÓGICA PRINCIPAL DO JOGO
+         * Objeto 'game' encapsula todo o estado para evitar poluição global
+         */
+        const game = {
+            running: false,
+            score: 0,
+            health: 100,
+            ammo: 12,
+            maxAmmo: 12,
+            reloading: false,
+            lastFrame: 0,
+            spawnTimer: 0,
+            
+            // Cache de elementos do DOM para performance
+            ui: {
+                hp: document.getElementById('hp-val'),
+                score: document.getElementById('score-val'),
+                ammo: document.getElementById('ammo-val'),
+                timer: document.getElementById('time-val'),
+                area: document.getElementById('game-area'),
+                gunCont: document.getElementById('weapon-container'),
+                gunImg: document.getElementById('weapon-img'), 
+                flash: document.getElementById('muzzle-flash'),
+                overlay: document.getElementById('overlay'),
+                damage: document.getElementById('damage-screen'),
+                crosshair: document.getElementById('crosshair')
+            },
+
+            init: function() {
+                // Previne menu de contexto ao clicar com botão direito (para recarregar)
+                window.addEventListener('contextmenu', e => e.preventDefault());
+                
+                // Movimento do mouse controla mira e efeito de balanço da arma
+                window.addEventListener('mousemove', e => {
+                    if(!this.running) return;
+                    
+                    this.ui.crosshair.style.left = e.clientX + 'px';
+                    this.ui.crosshair.style.top = e.clientY + 'px';
+
+                    // Cálculos para o efeito "Sway" da arma
+                    const normX = (e.clientX / window.innerWidth) * 2 - 1;
+                    const normY = (e.clientY / window.innerHeight) * 2 - 1;
+
+                    const moveX = normX * 40; 
+                    const moveY = Math.max(0, normY * 30); 
+
+                    const rotY = normX * 15;  
+                    const rotX = -normY * 10; 
+
+                    this.ui.gunCont.style.transform = 
+                        `translateX(calc(-50% + ${moveX}px)) 
+                         translateY(${moveY}px) 
+                         rotateY(${rotY}deg) 
+                         rotateX(${rotX}deg)`;
+                });
+
+                // Controles de tiro
+                window.addEventListener('mousedown', e => {
+                    if(!this.running) return;
+                    if(e.button === 0) this.shoot();
+                    if(e.button === 2) this.reload();
+                });
+            },
+
+            start: function() {
+                AudioSys.init();
+                // Desbloqueia contexto de áudio se necessário
+                if (AudioSys.ctx.state === 'suspended') {
+                    AudioSys.ctx.resume();
+                }
+
+                this.running = true;
+                this.score = 0;
+                this.health = 100;
+                this.ammo = this.maxAmmo;
+                this.ui.area.innerHTML = '';
+                this.ui.overlay.style.display = 'none';
+                this.updateUI();
+                requestAnimationFrame(t => this.loop(t));
+            },
+
+            // Loop principal do jogo (chamado a cada frame)
+            loop: function(t) {
+                if(!this.running) return;
+                const dt = t - this.lastFrame;
+                this.lastFrame = t;
+
+                this.spawnTimer += dt;
+                // Aumenta dificuldade com base na pontuação
+                let spawnRate = Math.max(600, 1500 - (this.score/2));
+                
+                if(this.spawnTimer > spawnRate) {
+                    this.spawnEnemy();
+                    this.spawnTimer = 0;
+                }
+                
+                this.ui.timer.innerText = Math.floor(t / 1000);
+                requestAnimationFrame(t => this.loop(t));
+            },
+
+            spawnEnemy: function() {
+                AudioSys.playOi();
+
+                const el = document.createElement('div');
+                el.className = 'enemy';
+                
+                el.innerHTML = `
+                    <div class="e-head"></div>
+                    <div class="e-body"></div>
+                    <div class="e-legs"></div>
+                    <div class="e-gun"></div>
+                    <div class="enemy-timer"></div>
+                `;
+
+                // Lógica de profundidade e posicionamento
+                const floorStart = window.innerHeight * 0.55; 
+                const floorEnd = window.innerHeight - 150; 
+                
+                const r = Math.random();
+                const depthFactor = r * r; // Distribuição quadrática para profundidade
+                
+                const y = floorStart + (depthFactor * (floorEnd - floorStart));
+                const x = Math.random() * (window.innerWidth - 150) + 75;
+
+                const scaleProgress = (y - floorStart) / (floorEnd - floorStart);
+                const scale = 0.5 + (scaleProgress * 0.9); 
+                
+                el.style.top = y + 'px';
+                el.style.left = x + 'px';
+                el.style.transform = `translate(-50%, -100%) scale(${scale})`;
+                el.style.zIndex = Math.floor(y);
+
+                // --- TEMPO DE REAÇÃO 
+                // Para: Valor fixo de 5000ms (5 segundos)
+                const reactionTime = 5000; 
+                
+                const timerBar = el.querySelector('.enemy-timer');
+                
+                // Inicia barra de tempo do inimigo
+                timerBar.style.transition = `width ${reactionTime}ms linear`;
+                setTimeout(() => timerBar.style.width = '0%', 50);
+
+                // Timeout para o inimigo atacar
+                const attackId = setTimeout(() => {
+                    if(el.parentElement) {
+                        this.takeDamage();
+                        el.remove();
+                    }
+                }, reactionTime);
+
+                // Evento de clique no inimigo
+                el.onmousedown = (e) => {
+                    // Botão esquerdo, com munição e não recarregando
+                    if(e.button === 0 && this.ammo > 0 && !this.reloading) {
+                        e.stopPropagation(); // Impede propagação para evitar tiro duplo
+                        this.shoot();        // Garante som e efeito visual
+                        clearTimeout(attackId);
+                        this.killEnemy(el);
+                    }
+                };
+
+                this.ui.area.appendChild(el);
+            },
+
+            shoot: function() {
+                if(this.reloading) return;
+                if(this.ammo > 0) {
+                    this.ammo--;
+                    
+                    AudioSys.playShootSound();
+                    
+                    // Aplica recuo na arma visível (SVG ou Imagem)
+                    const activeWeapon = document.getElementById('weapon-svg').style.display === 'block' 
+                                           ? document.getElementById('weapon-svg') 
+                                           : document.getElementById('weapon-img');
+                    
+                    activeWeapon.classList.remove('recoil');
+                    void activeWeapon.offsetWidth; // Força reflow para reiniciar animação
+                    activeWeapon.classList.add('recoil');
+                    
+                    // Clarão do tiro
+                    this.ui.flash.classList.add('flash-active');
+                    setTimeout(() => this.ui.flash.classList.remove('flash-active'), 50);
+                }
+                this.updateUI();
+            },
+
+            reload: function() {
+                if(this.reloading || this.ammo === this.maxAmmo) return;
+                this.reloading = true;
+                AudioSys.playReload();
+                this.ui.gunCont.classList.add('reloading-anim');
+                
+                setTimeout(() => {
+                    this.ammo = this.maxAmmo;
+                    this.reloading = false;
+                    this.ui.gunCont.classList.remove('reloading-anim');
+                    this.updateUI();
+                }, 1300); // Tempo de recarga
+            },
+
+            killEnemy: function(el) {
+                this.score += 100;
+                
+                // Toca som especial a cada 20 inimigos (2000 pontos)
+                // Usando new Audio direto para permitir sobreposição no "caos sonoro"
+                if (this.score > 0 && this.score % 2000 === 0) {
+                    AudioSys.playMk();
+                }
+
+                // Animação de morte (rotacionar e sumir)
+                el.style.transition = "transform 0.2s, opacity 0.2s";
+                const currentTransform = el.style.transform;
+                el.style.transform = currentTransform + " rotate(90deg)";
+                el.style.opacity = "0";
+                setTimeout(() => el.remove(), 200);
+                this.updateUI();
+            },
+
+            takeDamage: function() {
+                this.health -= 10;
+                // Flash vermelho na tela
+                this.ui.damage.style.background = 'rgba(255,0,0,0.5)';
+                setTimeout(() => this.ui.damage.style.background = 'transparent', 100);
+                
+                if(this.health <= 0) {
+                    this.running = false;
+                    this.ui.overlay.style.display = 'flex';
+                    
+                    // Tela de Game Over Personalizada
+                    const h1 = this.ui.overlay.querySelector('h1');
+                    const p = this.ui.overlay.querySelector('p');
+                    const btn = this.ui.overlay.querySelector('.btn');
+
+                    h1.innerText = "GAME OVER";
+                    h1.style.color = "red";
+                    
+                    p.innerHTML = "Não foi dessa vez que a vingança reinou nesse lugar, mas valeu a pena o surto psicótico! ";
+                    p.style.fontSize = "24px";
+                    p.style.color = "#ffaaaa";
+
+                    btn.innerText = "SURTAR NOVAMENTE 😈";
+                    btn.onclick = () => location.reload(); 
+                }
+                this.updateUI();
+            },
+
+            updateUI: function() {
+                this.ui.hp.innerText = this.health;
+                this.ui.score.innerText = this.score;
+                this.ui.ammo.innerText = this.ammo;
+                // Muda cor do texto se vida estiver baixa
+                this.ui.hp.style.color = this.health < 30 ? 'red' : '#00ffcc';
+            }
+        };
+
+        // Inicializa o jogo
+        game.init();
+    </script>
+</body>
+</html>

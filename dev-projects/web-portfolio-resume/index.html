@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kleberson Pastori | Cybersecurity Engineer | Cloud & DevSecOps</title>
+
+    <meta name="description" content="Cybersecurity Intern at Hyundai AutoEver focused on Cloud Security, DevSecOps and Python automation.">
+    <meta name="keywords" content="Cybersecurity, DevSecOps, Cloud Security, Python Automation, AWS, Network Security">
+    <meta name="author" content="Kleberson Pastori">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #00ffaa; 
+            --secondary: #00a8ff; 
+            --bg-dark: #0d1117; 
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 255, 170, 0.15); 
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 170, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 168, 255, 0.08) 0%, transparent 40%);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .lang-btn {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 5px;
+            transition: 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #000; 
+            border-color: transparent;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #000;
+            font-weight: 600;
+            border-color: transparent;
+            box-shadow: 0 0 15px rgba(0, 255, 170, 0.3);
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            z-index: 1000;
+            box-shadow: 0 0 10px var(--primary); 
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            padding: 60px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 40px rgba(0, 255, 170, 0.05);
+        }
+
+        .hero-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--secondary);
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(0, 168, 255, 0.3);
+        }
+
+        .hero-text-content {
+            text-align: left;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 255, 170, 0.2);
+        }
+
+        .objective-text {
+            max-width: 800px;
+            margin: 20px auto;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        .highlight-text {
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .social-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .social-btn:hover {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #000;
+            transform: translateY(-3px);
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(0, 255, 170, 0.3);
+        }
+
+        section {
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(to right, var(--primary), transparent);
+        }
+
+        .experience-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.08);
+            border-color: rgba(0, 255, 170, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .fab-contact {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-decoration: none;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .fab-contact:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero-header { flex-direction: column; text-align: center; }
+            .hero-text-content { text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="language-switch">
+    <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+    <button class="lang-btn" id="btn-pt" onclick="setLanguage('pt')">PT-BR</button>
+</div>
+
+<div id="progress-bar"></div>
+
+<div class="container">
+    <div class="hero">
+        <div class="hero-header">
+            <img src="assets/img/foto.png" alt="Kleberson Pastori" class="profile-img">
+            <div class="hero-text-content">
+                <h1>Kleberson Pastori</h1>
+                <p data-en="Cybersecurity Intern @ Hyundai AutoEver | Cloud Security | Python Automation"
+                   data-pt="Estagiário de Cibersegurança @ Hyundai AutoEver | Segurança em Nuvem | Automação com Python"
+                   style="font-weight: 600; color: var(--secondary);">
+                    Cybersecurity Intern @ Hyundai AutoEver | Cloud Security | Python Automation
+                </p>
+                <p data-en="Contributing to enterprise-level security operations in a global automotive IT environment."
+                   data-pt="Contribuindo para operações de segurança corporativa em um ambiente global de TI automotivo."
+                   style="margin-top:10px; font-size:0.9rem; color:var(--text-dim);">
+                    Contributing to enterprise-level security operations in a global automotive IT environment.
+                </p>
+            </div>
+        </div>
+
+        <p class="objective-text"
+           data-en="Cybersecurity Intern with hands-on experience in corporate security environments, focused on Cloud Security, Network Protection and Python automation. Experienced with firewall management, endpoint monitoring and API integrations."
+           data-pt="Estagiário de Cibersegurança com experiência prática em ambientes corporativos, focado em Segurança em Nuvem, Proteção de Redes e automação com Python. Experiência com gerenciamento de firewall, monitoramento de endpoints e integrações de API.">
+            Cybersecurity Intern with hands-on experience in corporate security environments, focused on Cloud Security, Network Protection and Python automation. Experienced with firewall management, endpoint monitoring and API integrations.
+        </p>
+
+        <p class="highlight-text"
+           data-en="Focused on building secure, automated and scalable cloud infrastructures."
+           data-pt="Focado em construir infraestruturas em nuvem seguras, automatizadas e escaláveis.">
+            Focused on building secure, automated and scalable cloud infrastructures.
+        </p>
+
+        <div class="social-links">
+            <a href="https://github.com/klebersonPastori/TRABALHOS.git" target="_blank" class="social-btn">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/kleberson-pastori-5b11b3119" target="_blank" class="social-btn">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+             <a href="assets/CV_Kleberson.pdf" class="social-btn" download data-en='<i class="fas fa-file-download"></i> Download CV' data-pt='<i class="fas fa-file-download"></i> Baixar CV'>
+                <i class="fas fa-file-download"></i> Download CV
+            </a>
+            <a href="mailto:kleber-pastori@hotmail.com" class="social-btn">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+        </div>
+    </div>
+
+    <section class="scroll-reveal visible">
+        <h2 data-en='<i class="fas fa-code"></i> Core Technical Skills' data-pt='<i class="fas fa-code"></i> Principais Habilidades Técnicas'>
+            <i class="fas fa-code"></i> Core Technical Skills
+        </h2>
+        <div class="experience-card">
+            <p data-en="<strong>Security:</strong> Firewall Support, Proxy Management, Endpoint Monitoring<br><strong>Cloud:</strong> AWS S3, Static Hosting, Manual Deployment<br><strong>Programming:</strong> Python (Automation & APIs), JavaScript<br><strong>Networking:</strong> HTTP, DNS, TCP/IP Fundamentals<br><strong>Version Control:</strong> Git & GitHub"
+               data-pt="<strong>Segurança:</strong> Suporte a Firewall, Gerenciamento de Proxy, Monitoramento de Endpoints<br><strong>Nuvem:</strong> AWS S3, Hospedagem Estática, Implantação Manual<br><strong>Programação:</strong> Python (Automação e APIs), JavaScript<br><strong>Redes:</strong> Fundamentos de HTTP, DNS, TCP/IP<br><strong>Controle de Versão:</strong> Git e GitHub">
+                <strong>Security:</strong> Firewall Support, Proxy Management, Endpoint Monitoring<br>
+                <strong>Cloud:</strong> AWS S3, Static Hosting, Manual Deployment<br>
+                <strong>Programming:</strong> Python (Automation & APIs), JavaScript<br>
+                <strong>Networking:</strong> HTTP, DNS, TCP/IP Fundamentals<br>
+                <strong>Version Control:</strong> Git & GitHub
+            </p>
+        </div>
+    </section>
+
+    <section class="scroll-reveal">
+        <h2 data-en='<i class="fas fa-shield-alt"></i> Security & Automation Projects' data-pt='<i class="fas fa-shield-alt"></i> Projetos de Segurança e Automação'>
+            <i class="fas fa-shield-alt"></i> Security & Automation Projects
+        </h2>
+        <div class="experience-card">
+            <h3 style="color: var(--secondary)" data-en="Network Troubleshooting Automation" data-pt="Automação de Solução de Problemas de Rede">
+                Network Troubleshooting Automation
+            </h3>
+            <p data-en="• Developed Python scripts to automate diagnostics and reduce manual troubleshooting<br>• API integration using HTTP GET/POST methods<br>• Log analysis and structured problem resolution<br>• Git version control for project management"
+               data-pt="• Desenvolveu scripts Python para automatizar diagnósticos e reduzir a solução manual de problemas<br>• Integração de API usando métodos HTTP GET/POST<br>• Análise de logs e resolução estruturada de problemas<br>• Controle de versão Git para gerenciamento de projetos">
+                • Developed Python scripts to automate diagnostics and reduce manual troubleshooting<br>
+                • API integration using HTTP GET/POST methods<br>
+                • Log analysis and structured problem resolution<br>
+                • Git version control for project management
+            </p>
+        </div>
+    </section>
+
+    <section class="scroll-reveal">
+        <h2 data-en='<i class="fas fa-cloud"></i> Web Applications Deployed on AWS' data-pt='<i class="fas fa-cloud"></i> Aplicações Web Implantadas na AWS'>
+            <i class="fas fa-cloud"></i> Web Applications Deployed on AWS
+        </h2>
+        <div class="experience-card">
+            <h3 style="color: var(--secondary)" data-en="JavaScript Browser Games" data-pt="Jogos de Navegador em JavaScript">
+                JavaScript Browser Games
+            </h3>
+            <p data-en="• Developed front-end applications using HTML, CSS and JavaScript<br>• Deployed via AWS S3 static hosting<br>• Configured public access and validated performance<br>• Managed manual deployment workflow"
+               data-pt="• Desenvolveu aplicações front-end usando HTML, CSS e JavaScript<br>• Implantado via hospedagem estática AWS S3<br>• Configuração de acesso público e validação de desempenho<br>• Gerenciamento do fluxo de implantação manual">
+                • Developed front-end applications using HTML, CSS and JavaScript<br>
+                • Deployed via AWS S3 static hosting<br>
+                • Configured public access and validated performance<br>
+                • Managed manual deployment workflow
+            </p>
+            <div class="social-links" style="margin-top:15px;">
+                <a href="https://gamejs.d2tgahe0ff8806.amplifyapp.com/" target="_blank" class="social-btn" data-en='<i class="fas fa-gamepad"></i> First Game' data-pt='<i class="fas fa-gamepad"></i> Primeiro Jogo'>
+                    <i class="fas fa-gamepad"></i> First Game
+                </a>
+                <a href="https://s3.us-east-1.amazonaws.com/shooting.game/game.html" target="_blank" class="social-btn" data-en='<i class="fas fa-gamepad"></i> Second Game' data-pt='<i class="fas fa-gamepad"></i> Segundo Jogo'>
+                    <i class="fas fa-gamepad"></i> Second Game
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="scroll-reveal">
+        <h2 data-en='<i class="fas fa-briefcase"></i> Professional Experience' data-pt='<i class="fas fa-briefcase"></i> Experiência Profissional'>
+            <i class="fas fa-briefcase"></i> Professional Experience
+        </h2>
+        <div class="experience-card">
+            <h3 style="color: var(--secondary)" data-en="Hyundai AutoEver - Cybersecurity Intern" data-pt="Hyundai AutoEver - Estagiário de Cibersegurança">
+                Hyundai AutoEver - Cybersecurity Intern
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-dim)" data-en="September/2025 - Present" data-pt="Setembro/2025 - Presente">
+                September/2025 - Present
+            </p>
+            <p style="margin-top: 10px" data-en="• Supporting firewall and proxy management in enterprise environment<br>• Assisting endpoint monitoring across corporate devices<br>• Developing automation scripts to reduce manual operational tasks<br>• Contributing to security infrastructure support and documentation"
+               data-pt="• Suporte ao gerenciamento de firewall e proxy em ambiente corporativo<br>• Auxílio no monitoramento de endpoints em dispositivos corporativos<br>• Desenvolvimento de scripts de automação para reduzir tarefas operacionais manuais<br>• Contribuição para suporte e documentação da infraestrutura de segurança">
+                • Supporting firewall and proxy management in enterprise environment<br>
+                • Assisting endpoint monitoring across corporate devices<br>
+                • Developing automation scripts to reduce manual operational tasks<br>
+                • Contributing to security infrastructure support and documentation
+            </p>
+        </div>
+    </section>
+
+</div>
+
+<footer data-en="&copy; 2026 Kleberson Pastori. All rights reserved." data-pt="&copy; 2026 Kleberson Pastori. Todos os direitos reservados.">
+    &copy; 2026 Kleberson Pastori. All rights reserved.
+</footer>
+
+<a href="https://wa.me/5519982260199" class="fab-contact" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+function handleScroll() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
+
+    document.querySelectorAll('section').forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+            sec.classList.add('visible');
+        }
+    });
+}
+window.addEventListener('scroll', handleScroll);
+window.onload = handleScroll;
+
+function setLanguage(lang) {
+    document.documentElement.lang = lang === 'pt' ? 'pt-br' : 'en';
+    
+    document.querySelectorAll("[data-en]").forEach(el => {
+        el.innerHTML = el.getAttribute("data-" + lang);
+    });
+
+    document.getElementById('btn-en').classList.remove('active');
+    document.getElementById('btn-pt').classList.remove('active');
+    document.getElementById('btn-' + lang).classList.add('active');
+}
+
+setLanguage("en");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<style>
+        /*ESTILOS GERAIS*/
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                url("../assets/img/background.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: sans-serif, Helvetica, Arial;
+            color: white;
+            margin: 0;
+            padding: 40px;
+        }
+		
+		img{
+			width: 270px;
+		}
+
+        h2, table {
+            scroll-margin-top: 80px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /*HEADER E MENU*/
+        h1{
+            text-align: center;
+            font-size: 30px;
+            line-height: 1.6;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }    
+            
+        .menu-container {
+            position: fixed;
+            top: 82px;
+            left: 34px;
+            z-index: 9999; 
+            background-color: rgba(172, 51, 51, 0.9);   
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            padding-bottom: 14px;
+        }
+        
+        .menu-container:focus-within {
+            outline: 2px solid white;
+        }
+        
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+            transition: 0.3s;
+        }
+
+        .menu-links {
+            position: absolute; top: 52px; left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(4px);     
+            transition: opacity .15s ease, transform .15s ease, visibility .15s;
+            list-style: none;
+            margin: 0;
+            padding: 6px 0;
+            background: rgba(0,0,0,0.85);
+            min-width: 220px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .menu-title {
+            padding: 10px 14px;
+            color: #ddd;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .menu-links li {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .menu-links li:first-child { border-top: 0; }
+
+        .menu-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            white-space: nowrap;
+            display: block;      
+            padding: 10px 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-links li:hover > a,
+        .menu-links a:focus {
+            background-color: rgba(255, 255, 255, 0.06);
+            outline: none;
+        }
+
+        .menu-container:hover .menu-links,
+        .menu-container:focus-within .menu-links {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /*CONTEÚDO PRINCIPAL*/
+        img {
+            display: block;
+            margin: 100px auto 20px auto; 
+            border-radius: 10px;
+            max-width: 50%;
+        }
+
+        audio {
+           display: block;
+           margin: 10px auto 30px auto; 
+           border-radius: 10px;
+           max-width: 18%;
+           width: 100%; 
+        }
+
+        /*MENU*/
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px; 
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .wrapper a {
+            display: block;
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 17px;
+            font-family: sans-serif;
+            text-decoration: none;
+            color: #666666;
+            border: 2px solid #333;
+            letter-spacing: 2px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            transition: all .35s;
+            background-color: rgba(255, 0, 59, 0.15); 
+            overflow: hidden; 
+        }
+
+        .wrapper a span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .wrapper a:after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #f08eb0;
+            transition: all .35s;
+            z-index: 1;
+        }
+
+        .wrapper a:hover, .wrapper a:focus {
+            color: #fff;
+            border-color: #f08eb0; 
+            outline: none;
+        }
+
+        .wrapper a:hover:after, .wrapper a:focus:after {
+            width: 100%;
+        }
+
+        /*RODAPÉ*/
+        .direitos-autorais {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        .Autor {
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 10px;
+            padding-bottom: 30px;
+            opacity: 0.6;
+        }
+
+        /*RESPONSIVIDADE (CELULARES)*/
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            h1 {
+                position: static; 
+                margin: 0 auto 30px auto;
+                width: 100%;
+            }
+
+            .menu-container {
+                top: 15px;
+                left: 15px;
+            }
+
+            img, audio {
+                max-width: 100%; /
+                margin-top: 20px;
+            }
+            
+            .wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
