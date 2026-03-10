@@ -1,0 +1,31 @@
+{
+  "pcap": "C:\\diretorio\\critic-pcap\\demo.pcap",
+  "count": 5,
+  "findings": [
+    {
+      "type": "http_basic_creds",
+      "severity": "high",
+      "detail": "Credenciais em claro (Basic): user:password"
+    },
+    {
+      "type": "insecure_protocol",
+      "severity": "high",
+      "detail": "Tráfego detectado em protocolo inseguro: FTP (porta 21)"
+    },
+    {
+      "type": "insecure_protocol",
+      "severity": "high",
+      "detail": "Tráfego detectado em protocolo inseguro: Telnet (porta 23)"
+    },
+    {
+      "type": "http_sensitive_param",
+      "severity": "medium",
+      "detail": "Parametro sensível em HTTP: ...l\r\n\r\nusername=alice&password=Summer2026!..."
+    },
+    {
+      "type": "insecure_protocol",
+      "severity": "medium",
+      "detail": "Tráfego detectado em protocolo inseguro: POP3 (porta 110)"
+    }
+  ]
+}
