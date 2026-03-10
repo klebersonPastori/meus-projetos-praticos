@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/BLUE%20TEAM-PCAP%20SCANNER-0A84FF?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/PCAP%20ANALYZER-Blue%20Team%20Automation-00FF9C?style=for-the-badge&logo=hackaday&logoColor=black" />
 </p>
 
-<h1 align="center">🛰️ PCAP Critical Scanner</h1>
+<h1 align="center">💻🔍 PCAP Critical Scanner</h1>
 <p align="center">
-  Automação defensiva • Tráfego inseguro • SOC • Blue Team • Python + Scapy
+  Detecção automática de riscos em tráfego de rede • Segurança ofensiva e defensiva
 </p>
 
 # 🛰️ PCAP Critical Scanner
