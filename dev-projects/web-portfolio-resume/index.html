@@ -3,311 +3,820 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kleberson Pastori | Cybersecurity Engineer | Cloud & DevSecOps</title>
-
-    <meta name="description" content="Cybersecurity Intern at Hyundai AutoEver focused on Cloud Security, DevSecOps and Python automation.">
-    <meta name="keywords" content="Cybersecurity, DevSecOps, Cloud Security, Python Automation, AWS, Network Security">
+    <title>Kleberson Pastori | Cybersecurity & Cloud</title>
+    <meta name="description" content="Cybersecurity Intern at Hyundai AutoEver focused on Security, DevSecOps and Python automation.">
+    <meta name="keywords" content="Cybersecurity, DevSecOps, Python Automation, AWS, Network Security">
     <meta name="author" content="Kleberson Pastori">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00ffaa; 
-            --secondary: #00a8ff; 
-            --bg-dark: #0d1117; 
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(0, 255, 170, 0.15); 
-            --text-main: #c9d1d9;
-            --text-dim: #8b949e;
+            --primary: #00ff88;
+            --secondary: #00cfff;
+            --accent: #ff3c6e;
+            --bg-dark: #050a0e;
+            --bg-mid: #0a1520;
+            --glass: rgba(0, 255, 136, 0.03);
+            --glass-border: rgba(0, 255, 136, 0.12);
+            --text-main: #d8efe8;
+            --text-dim: #7aaa98;
+            --neon-green: #00ff88;
+            --neon-blue: #00cfff;
+            --matrix-green: #00ff41;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 255, 170, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 168, 255, 0.08) 0%, transparent 40%);
             color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
             overflow-x: hidden;
-            line-height: 1.6;
+            line-height: 1.85;
         }
 
+        /*MATRIX CANVAS*/
+        #matrix-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            opacity: 0.13;
+            pointer-events: none;
+        }
+
+        /*SCAN LINE OVERLAY*/
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 136, 0.015) 2px,
+                rgba(0, 255, 136, 0.015) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /*GRID BG*/
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /*PROGRESS BAR*/
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+            width: 0%;
+            z-index: 9999;
+            box-shadow: 0 0 15px var(--primary), 0 0 30px var(--primary);
+            transition: width 0.1s;
+        }
+
+        /*LANGUAGE SWITCH*/
         .language-switch {
             position: fixed;
-            top: 15px;
-            right: 20px;
+            top: 18px; right: 20px;
             z-index: 2000;
+            display: flex;
+            gap: 5px;
         }
 
         .lang-btn {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
+            background: rgba(0,255,136,0.05);
+            border: 1px solid rgba(0,255,136,0.2);
             color: var(--text-main);
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 5px 14px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: 5px;
+            font-size: 1.1rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
-
-        .lang-btn:hover {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: #000; 
-            border-color: transparent;
-        }
-
-        .lang-btn.active {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--primary);
             color: #000;
-            font-weight: 600;
-            border-color: transparent;
-            box-shadow: 0 0 15px rgba(0, 255, 170, 0.3);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0,255,136,0.4);
+            font-weight: 700;
         }
 
-        #progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            width: 0%;
-            z-index: 1000;
-            box-shadow: 0 0 10px var(--primary); 
-        }
-
+        /*CONTAINER*/
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
+            position: relative;
+            z-index: 10;
         }
 
+        /*TERMINAL CURSOR*/
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .cursor { animation: blink 1s infinite; color: var(--primary); }
+
+        /*HERO*/
         .hero {
-            padding: 60px 20px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            padding: 55px 40px;
+            background: rgba(5,10,14,0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0,255,136,0.15);
+            border-radius: 4px;
             margin-bottom: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 0 40px rgba(0, 255, 170, 0.05);
+            position: relative;
+            overflow: hidden;
         }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), var(--secondary), transparent);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(0,255,136,0.3), transparent);
+        }
+
+        /*Corner decorations*/
+        .hero-corner {
+            position: absolute;
+            width: 20px; height: 20px;
+        }
+        .hero-corner.tl { top: 0; left: 0; border-top: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+        .hero-corner.tr { top: 0; right: 0; border-top: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+        .hero-corner.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--primary); border-left: 2px solid var(--primary); }
+        .hero-corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
+
+        /*System tag*/
+        .sys-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            align-self: flex-start;
+        }
+        .sys-tag span { color: var(--primary); }
 
         .hero-header {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 35px;
             flex-wrap: wrap;
             margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .profile-img-wrapper {
+            position: relative;
+            flex-shrink: 0;
         }
 
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 145px;
+            height: 145px;
             border-radius: 50%;
-            border: 3px solid var(--secondary);
+            border: 2px solid var(--primary);
             object-fit: cover;
-            box-shadow: 0 0 20px rgba(0, 168, 255, 0.3);
+            display: block;
+            box-shadow: 0 0 0 6px rgba(0,255,136,0.05), 0 0 30px rgba(0,255,136,0.2);
+            position: relative;
+            z-index: 1;
         }
 
-        .hero-text-content {
-            text-align: left;
-            flex: 1;
-            min-width: 250px;
+        /*Profile ring animation*/
+        .profile-ring {
+            position: absolute;
+            top: -10px; left: -10px;
+            width: 165px; height: 165px;
+            border-radius: 50%;
+            border: 1px dashed rgba(0,255,136,0.3);
+            animation: spin 20s linear infinite;
+        }
+        .profile-ring::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px;
+            width: 153px; height: 153px;
+            border-radius: 50%;
+            border: 1px dashed rgba(0,207,255,0.2);
+            animation: spin 15s linear infinite reverse;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /*Photo placeholder*/
+        .profile-placeholder {
+            width: 145px;
+            height: 145px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,207,255,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 6px rgba(0,255,136,0.05), 0 0 30px rgba(0,255,136,0.2);
+            position: relative;
+            z-index: 1;
+        }
+        .profile-placeholder i {
+            font-size: 3.5rem;
+            color: rgba(0,255,136,0.4);
+        }
+
+        .hero-text-content { flex: 1; min-width: 260px; }
+
+        .hero-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            font-family: 'Orbitron', monospace;
+            font-size: 2.9rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 60%, #fff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 170, 0.2);
+            background-clip: text;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(0,255,136,0.3));
+        }
+
+        .hero-subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: var(--secondary);
+            letter-spacing: 1px;
+        }
+
+        /*Status badge*/
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.2);
+            padding: 5px 14px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.92rem;
+            color: var(--primary);
+            margin-top: 12px;
+        }
+        .status-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+        /*Threat stats*/
+        .threat-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0 20px;
+            width: 100%;
+        }
+        .stat-item {
+            background: rgba(0,255,136,0.04);
+            border: 1px solid rgba(0,255,136,0.1);
+            border-radius: 3px;
+            padding: 12px 20px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .stat-item:hover { border-color: rgba(0,255,136,0.3); transform: translateY(-3px); }
+        .stat-item:hover::before { opacity: 1; }
+        .stat-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            text-shadow: 0 0 15px rgba(0,255,136,0.5);
+        }
+        .stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .objective-text {
-            max-width: 800px;
-            margin: 20px auto;
-            color: var(--text-dim);
+            max-width: 780px;
+            margin: 10px auto 5px;
+            color: #c0ddd4;
             text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
 
         .highlight-text {
-            margin-top: 15px;
+            margin-top: 12px;
             font-weight: 600;
             color: var(--secondary);
             text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
         }
+        .highlight-text::before { content: '> '; color: var(--primary); }
 
+        /*SOCIAL LINKS*/
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: 25px;
+            margin-top: 28px;
         }
 
         .social-btn {
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 9px 20px;
+            border-radius: 3px;
             text-decoration: none;
             color: var(--text-main);
-            font-size: 0.9rem;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            transition: 0.3s;
+            font-size: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 0.5px;
+            background: rgba(0,255,136,0.04);
+            border: 1px solid rgba(0,255,136,0.15);
+            transition: 0.25s;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         .social-btn:hover {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: var(--primary);
             color: #000;
-            transform: translateY(-3px);
-            border-color: transparent;
-            box-shadow: 0 5px 15px rgba(0, 255, 170, 0.3);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0,255,136,0.35), 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
         }
 
+        /*SECTIONS*/
         section {
             margin-bottom: 50px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
+            transform: translateY(25px);
+            transition: all 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
         }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        section.visible { opacity: 1; transform: translateY(0); }
 
         h2 {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 22px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-
+        h2::before {
+            content: '//';
+            color: var(--text-dim);
+            font-weight: 400;
+        }
         h2::after {
             content: '';
             height: 1px;
             flex-grow: 1;
-            background: linear-gradient(to right, var(--primary), transparent);
+            background: linear-gradient(to right, rgba(0,255,136,0.3), transparent);
         }
+        h2 i { color: var(--secondary); font-size: 1.1rem; }
 
+        /*CARDS*/
         .experience-card {
-            background: var(--glass);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            background: rgba(5,10,14,0.9);
+            padding: 25px 28px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,255,136,0.1);
+            margin-bottom: 16px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: 0.3s;
+        }
         .experience-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 170, 0.08);
-            border-color: rgba(0, 255, 170, 0.3);
+            border-color: rgba(0,255,136,0.25);
+            box-shadow: 0 0 30px rgba(0,255,136,0.06), inset 0 0 40px rgba(0,255,136,0.02);
+            transform: translateX(3px);
+        }
+        .experience-card:hover::before { opacity: 1; }
+
+        .experience-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
+        .experience-card p {
+            font-size: 1.08rem;
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        /*SKILL TAGS*/
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .skill-group {
+            background: rgba(0,255,136,0.03);
+            border: 1px solid rgba(0,255,136,0.1);
+            border-radius: 4px;
+            padding: 14px 18px;
+            transition: 0.3s;
+        }
+        .skill-group:hover {
+            border-color: rgba(0,255,136,0.25);
+            background: rgba(0,255,136,0.06);
+        }
+        .skill-group-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .skill-group-title::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 6px var(--primary);
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+        .skill-tag {
+            background: rgba(0,255,136,0.05);
+            border: 1px solid rgba(0,255,136,0.15);
+            color: #b0d8c4;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            padding: 5px 13px;
+            border-radius: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /*PHISHING DEMO*/
+        .phishing-demo {
+            background: rgba(5,10,14,0.9);
+            border: 1px solid rgba(0,255,136,0.12);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .phishing-header {
+            background: rgba(0,255,136,0.05);
+            border-bottom: 1px solid rgba(0,255,136,0.1);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.92rem;
+            color: var(--text-dim);
+        }
+        .dot-red { width:10px;height:10px;border-radius:50%;background:#ff5f57; }
+        .dot-yellow { width:10px;height:10px;border-radius:50%;background:#ffbd2e; }
+        .dot-green { width:10px;height:10px;border-radius:50%;background:#28ca41; }
+        .phishing-body { padding: 18px; }
+        .email-line {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            gap: 10px;
+        }
+        .email-field { color: var(--text-dim); min-width: 50px; }
+        .email-val { color: var(--text-main); }
+        .email-val.danger { color: var(--accent); }
+        .email-val.safe { color: var(--primary); }
+        .email-body-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            color: #b8d8ca;
+            margin-top: 12px;
+            line-height: 2;
+        }
+        .email-body-text .highlight { color: var(--accent); text-decoration: underline; }
+        .threat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,60,110,0.08);
+            border: 1px solid rgba(255,60,110,0.3);
+            border-radius: 3px;
+            padding: 4px 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.88rem;
+            color: var(--accent);
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+        .threat-badge i { font-size: 1.05rem; }
+
+        /*TERMINAL BLOCK*/
+        .terminal-block {
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(0,255,136,0.12);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .terminal-header {
+            background: rgba(0,255,136,0.05);
+            border-bottom: 1px solid rgba(0,255,136,0.08);
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            margin-left: 5px;
+        }
+        .terminal-body {
+            padding: 15px 18px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+        .t-prompt { color: var(--primary); }
+        .t-cmd { color: #fff; }
+        .t-out { color: var(--text-dim); padding-left: 15px; }
+        .t-out.success { color: var(--primary); }
+        .t-out.warn { color: #ffb800; }
+
+        /*CERT BADGES*/
+        .cert-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .cert-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,207,255,0.04);
+            border: 1px solid rgba(0,207,255,0.15);
+            border-radius: 4px;
+            padding: 10px 16px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .cert-badge:hover {
+            border-color: rgba(0,207,255,0.35);
+            box-shadow: 0 0 15px rgba(0,207,255,0.1);
+        }
+        .cert-badge i { color: var(--secondary); font-size: 1.1rem; }
+        .cert-name { font-weight: 600; color: var(--text-main); font-size: 1rem; }
+        .cert-org { font-family: 'Share Tech Mono', monospace; font-size: 1.05rem; color: var(--text-dim); letter-spacing: 1px; }
+
+        /*FOOTER*/
         footer {
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0 20px;
             color: var(--text-dim);
-            font-size: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.92rem;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 10;
+        }
+        footer::before {
+            content: '';
+            display: block;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(0,255,136,0.2), transparent);
+            margin-bottom: 20px;
         }
 
+        /*FAB*/
         .fab-contact {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
+            bottom: 28px; right: 28px;
+            width: 55px; height: 55px;
             background: #25d366;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-size: 26px;
+            box-shadow: 0 5px 20px rgba(37,211,102,0.4);
             text-decoration: none;
-            z-index: 100;
-            transition: transform 0.3s ease;
+            z-index: 1000;
+            transition: 0.3s;
         }
-
         .fab-contact:hover {
-            transform: scale(1.1);
+            transform: scale(1.12) rotate(-5deg);
+            box-shadow: 0 8px 30px rgba(37,211,102,0.5);
         }
 
+        /*RESPONSIVE*/
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .hero-header { flex-direction: column; text-align: center; }
+            .hero h1 { font-size: 1.7rem; }
+            .hero-header { flex-direction: column; text-align: center; gap: 20px; }
             .hero-text-content { text-align: center; }
+            .status-badge { margin: 12px auto 0; }
+            .threat-stats { gap: 10px; }
+            h2 { font-size: 1.05rem; }
+            .skill-grid { grid-template-columns: 1fr 1fr; }
         }
+
+        /*GLITCH ANIMATION*/
+        @keyframes glitch {
+            0%,90%,100% { transform: translate(0); clip-path: none; }
+            91% { transform: translate(-2px,1px); clip-path: polygon(0 20%,100% 20%,100% 40%,0 40%); }
+            93% { transform: translate(2px,-1px); clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); }
+            95% { transform: translate(-1px,2px); clip-path: polygon(0 10%,100% 10%,100% 30%,0 30%); }
+        }
+        .hero h1 { animation: glitch 8s ease-in-out infinite; }
+
+        /*TYPEWRITER*/
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 2.5s steps(40,end), blink-caret 0.75s step-end infinite;
+            max-width: fit-content;
+        }
+        @keyframes typing { from{width:0} to{width:100%} }
+        @keyframes blink-caret { 0%,100%{border-color:transparent} 50%{border-color:var(--primary)} }
+
+        /* IP tag top left */
+        .ip-badge {
+            position: fixed;
+            top: 18px;
+            left: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            z-index: 2000;
+            letter-spacing: 1px;
+        }
+        .ip-badge span { color: rgba(0,255,136,0.5); }
     </style>
 </head>
-
 <body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<div id="progress-bar"></div>
+
+<div class="ip-badge">SYS <span>|</span> SECURE_CONN <span>|</span> <span id="live-time"></span></div>
 
 <div class="language-switch">
     <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
     <button class="lang-btn" id="btn-pt" onclick="setLanguage('pt')">PT-BR</button>
 </div>
 
-<div id="progress-bar"></div>
-
 <div class="container">
+
+    <!--HERO-->
     <div class="hero">
+        <div class="hero-corner tl"></div>
+        <div class="hero-corner tr"></div>
+        <div class="hero-corner bl"></div>
+        <div class="hero-corner br"></div>
+
         <div class="hero-header">
-            <img src="assets/img/foto.png" alt="Kleberson Pastori" class="profile-img">
+            <div class="profile-img-wrapper">
+                <img src="assets/img/foto.png" alt="Kleberson Pastori" class="profile-img"> 
+            </div>
             <div class="hero-text-content">
+                <div class="hero-label">SECURITY_ANALYST :: CLOUD_PRACTITIONER</div>
                 <h1>Kleberson Pastori</h1>
-                <p data-en="Cybersecurity Intern @ Hyundai AutoEver | Cloud Security | Python Automation"
-                   data-pt="Estagiário de Cibersegurança @ Hyundai AutoEver | Segurança em Nuvem | Automação com Python"
-                   style="font-weight: 600; color: var(--secondary);">
-                    Cybersecurity Intern @ Hyundai AutoEver | Cloud Security | Python Automation
+                <p class="hero-subtitle typewriter"
+                   data-en="Cybersecurity Intern @ Hyundai AutoEver"
+                   data-pt="Estagiário de Cibersegurança @ Hyundai AutoEver">
+                    Cybersecurity Intern @ Hyundai AutoEver
                 </p>
-                <p data-en="Contributing to enterprise-level security operations in a global automotive IT environment."
-                   data-pt="Contribuindo para operações de segurança corporativa em um ambiente global de TI automotivo."
-                   style="margin-top:10px; font-size:0.9rem; color:var(--text-dim);">
-                    Contributing to enterprise-level security operations in a global automotive IT environment.
-                </p>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span data-en="ONLINE — OPEN TO OPPORTUNITIES" data-pt="ONLINE — ABERTO A OPORTUNIDADES">ONLINE — OPEN TO OPPORTUNITIES</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="threat-stats">
+            <div class="stat-item">
+                <span class="stat-num">1+</span>
+                <span class="stat-label">YRS EXPERIENCE</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">AWS</span>
+                <span class="stat-label">CLOUD PLATFORM</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">PY</span>
+                <span class="stat-label">AUTOMATION</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">SOC</span>
+                <span class="stat-label">MONITORING</span>
             </div>
         </div>
 
         <p class="objective-text"
-           data-en="Cybersecurity Intern with hands-on experience in corporate security environments, focused on Cloud Security, Network Protection and Python automation. Experienced with firewall management, endpoint monitoring and API integrations."
-           data-pt="Estagiário de Cibersegurança com experiência prática em ambientes corporativos, focado em Segurança em Nuvem, Proteção de Redes e automação com Python. Experiência com gerenciamento de firewall, monitoramento de endpoints e integrações de API.">
-            Cybersecurity Intern with hands-on experience in corporate security environments, focused on Cloud Security, Network Protection and Python automation. Experienced with firewall management, endpoint monitoring and API integrations.
+           data-en="Cybersecurity Intern with hands-on experience in corporate security environments, focused on Security and  Cloud, Network Protection and Python automation. Experienced with firewall management, and endpoint monitoring"
+           data-pt="Estagiário de Cibersegurança com experiência prática em ambientes corporativos, focado em Segurança e em Nuvem, Proteção de Redes e automação com Python. Experiência com gerenciamento de firewall, e monitoramento de endpoints.">
+            Cybersecurity Intern with hands-on experience in corporate security environments, focused on Security and  Cloud, Network Protection and Python automation. Experienced with firewall management, and endpoint monitoring.
         </p>
 
         <p class="highlight-text"
-           data-en="Focused on building secure, automated and scalable cloud infrastructures."
-           data-pt="Focado em construir infraestruturas em nuvem seguras, automatizadas e escaláveis.">
-            Focused on building secure, automated and scalable cloud infrastructures.
+           data-en="Focused on manage and building secure, automated and scalable infrastructures."
+           data-pt="Focado em gerenciar e construir infraestruturas seguras, automatizadas e escaláveis.">
+            Focused on manage and building secure, automated and scalable infrastructures.
         </p>
 
         <div class="social-links">
-            <a href="https://github.com/klebersonPastori/TRABALHOS.git" target="_blank" class="social-btn">
+            <a href="https://github.com/klebersonPastori/meus-projetos-praticos.git" target="_blank" class="social-btn">
                 <i class="fab fa-github"></i> GitHub
             </a>
             <a href="https://www.linkedin.com/in/kleberson-pastori-5b11b3119" target="_blank" class="social-btn">
                 <i class="fab fa-linkedin"></i> LinkedIn
             </a>
-             <a href="assets/CV_Kleberson.pdf" class="social-btn" download data-en='<i class="fas fa-file-download"></i> Download CV' data-pt='<i class="fas fa-file-download"></i> Baixar CV'>
+            <a href="assets/CV_Kleberson.pdf" class="social-btn" target="_blank" download
+               data-en='<i class="fas fa-file-download"></i> Download CV'
+               data-pt='<i class="fas fa-file-download"></i> Baixar CV'>
                 <i class="fas fa-file-download"></i> Download CV
             </a>
             <a href="mailto:kleber-pastori@hotmail.com" class="social-btn">
@@ -316,46 +825,141 @@
         </div>
     </div>
 
+    <!--SKILLS-->
     <section class="scroll-reveal visible">
-        <h2 data-en='<i class="fas fa-code"></i> Core Technical Skills' data-pt='<i class="fas fa-code"></i> Principais Habilidades Técnicas'>
-            <i class="fas fa-code"></i> Core Technical Skills
+        <h2 data-en='<i class="fas fa-terminal"></i> Core Technical Skills'
+            data-pt='<i class="fas fa-terminal"></i> Principais Habilidades Técnicas'>
+            <i class="fas fa-terminal"></i> Core Technical Skills
         </h2>
-        <div class="experience-card">
-            <p data-en="<strong>Security:</strong> Firewall Support, Proxy Management, Endpoint Monitoring<br><strong>Cloud:</strong> AWS S3, Static Hosting, Manual Deployment<br><strong>Programming:</strong> Python (Automation & APIs), JavaScript<br><strong>Networking:</strong> HTTP, DNS, TCP/IP Fundamentals<br><strong>Version Control:</strong> Git & GitHub"
-               data-pt="<strong>Segurança:</strong> Suporte a Firewall, Gerenciamento de Proxy, Monitoramento de Endpoints<br><strong>Nuvem:</strong> AWS S3, Hospedagem Estática, Implantação Manual<br><strong>Programação:</strong> Python (Automação e APIs), JavaScript<br><strong>Redes:</strong> Fundamentos de HTTP, DNS, TCP/IP<br><strong>Controle de Versão:</strong> Git e GitHub">
-                <strong>Security:</strong> Firewall Support, Proxy Management, Endpoint Monitoring<br>
-                <strong>Cloud:</strong> AWS S3, Static Hosting, Manual Deployment<br>
-                <strong>Programming:</strong> Python (Automation & APIs), JavaScript<br>
-                <strong>Networking:</strong> HTTP, DNS, TCP/IP Fundamentals<br>
-                <strong>Version Control:</strong> Git & GitHub
-            </p>
+        <div class="skill-grid">
+            <div class="skill-group">
+                <div class="skill-group-title" data-en="SECURITY" data-pt="SEGURANÇA">SECURITY</div>
+                <div class="skill-tags">
+                    <span class="skill-tag" data-en="Firewall Mgmt" data-pt="Gestão de Firewall">Firewall Mgmt</span>
+                    <span class="skill-tag" data-en="Proxy Mgmt" data-pt="Gestão de Proxy">Proxy Mgmt</span>
+                    <span class="skill-tag" data-en="Endpoint Mon." data-pt="Mon. de Endpoint">Endpoint Mon.</span>
+                    <span class="skill-tag">SOC</span>
+                    <span class="skill-tag" data-en="Threat Analysis" data-pt="Análise de Ameaças">Threat Analysis</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <div class="skill-group-title">CLOUD</div>
+                <div class="skill-tags">
+                    <span class="skill-tag">AWS S3</span>
+                    <span class="skill-tag" data-en="Static Hosting" data-pt="Hospedagem Estática">Static Hosting</span>
+                    <span class="skill-tag" data-en="Deployment" data-pt="Deploy">Deployment</span>
+                    <span class="skill-tag">Amplify</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <div class="skill-group-title" data-en="PROGRAMMING" data-pt="PROGRAMAÇÃO">PROGRAMMING</div>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">WEB</span>
+                    <span class="skill-tag" data-en="Automation" data-pt="Automação">Automation</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <div class="skill-group-title" data-en="NETWORKING" data-pt="REDES">NETWORKING</div>
+                <div class="skill-tags">
+                    <span class="skill-tag">TCP/IP</span>
+                    <span class="skill-tag">HTTP/HTTPS</span>
+                    <span class="skill-tag">DNS</span>
+                    <span class="skill-tag">Network</span>
+                    <span class="skill-tag">Git / GitHub</span>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!--PROJECTS-->
     <section class="scroll-reveal">
-        <h2 data-en='<i class="fas fa-shield-alt"></i> Security & Automation Projects' data-pt='<i class="fas fa-shield-alt"></i> Projetos de Segurança e Automação'>
+        <h2 data-en='<i class="fas fa-shield-alt"></i> Security & Automation Projects'
+            data-pt='<i class="fas fa-shield-alt"></i> Projetos de Segurança e Automação'>
             <i class="fas fa-shield-alt"></i> Security & Automation Projects
         </h2>
+
         <div class="experience-card">
-            <h3 style="color: var(--secondary)" data-en="Network Troubleshooting Automation" data-pt="Automação de Solução de Problemas de Rede">
+            <h3 data-en="Network Troubleshooting Automation" data-pt="Automação de Diagnóstico de Rede">
                 Network Troubleshooting Automation
             </h3>
-            <p data-en="• Developed Python scripts to automate diagnostics and reduce manual troubleshooting<br>• API integration using HTTP GET/POST methods<br>• Log analysis and structured problem resolution<br>• Git version control for project management"
-               data-pt="• Desenvolveu scripts Python para automatizar diagnósticos e reduzir a solução manual de problemas<br>• Integração de API usando métodos HTTP GET/POST<br>• Análise de logs e resolução estruturada de problemas<br>• Controle de versão Git para gerenciamento de projetos">
+            <p data-en="• Developed Python scripts to automate diagnostics and reduce manual troubleshooting<br>• HTTP GET/POST <br>• Log analysis and structured problem resolution<br>• Git version control for project management"
+               data-pt="• Desenvolveu scripts Python para automatizar diagnósticos e reduzir a solução manual de problemas<br>• HTTP GET/POST<br>• Análise de logs e resolução estruturada de problemas<br>• Controle de versão Git para gerenciamento de projetos">
                 • Developed Python scripts to automate diagnostics and reduce manual troubleshooting<br>
-                • API integration using HTTP GET/POST methods<br>
+                • HTTP GET/POST<br>
                 • Log analysis and structured problem resolution<br>
                 • Git version control for project management
             </p>
+
+            <!--Terminal demo-->
+            <div class="terminal-block" style="margin-top:18px;">
+                <div class="terminal-header">
+                    <div class="dot-red"></div>
+                    <div class="dot-yellow"></div>
+                    <div class="dot-green"></div>
+                    <span class="terminal-title">net_diagnostic.py — bash</span>
+                </div>
+                <div class="terminal-body">
+                    <div><span class="t-prompt">kleberson@sec:~$</span> <span class="t-cmd">python net_diagnostic.py --host 192.168.1.1</span></div>
+                    <div class="t-out">[*] Initiating scan on 192.168.1.1 ...</div>
+                    <div class="t-out success">[+] Host reachable — latency: 12ms</div>
+                    <div class="t-out success">[+] Firewall rules: OK (3 active policies)</div>
+                    <div class="t-out warn">[!] Proxy anomaly detected — logging to report.json</div>
+                    <div class="t-out success">[+] Report exported. No critical threats found.</div>
+                </div>
+            </div>
+        </div>
+
+        <!--Phishing awareness card-->
+        <div class="experience-card">
+            <h3 data-en="Phishing Threat Awareness" data-pt="Conscientização sobre Phishing">
+                Phishing Threat Awareness
+            </h3>
+            <p style="font-size:1.05rem; color:var(--text-dim); margin-bottom:5px;" data-en="Understanding and identifying social engineering attacks in enterprise environments." data-pt="Identificação de ataques de engenharia social em ambientes corporativos.">
+                Understanding and identifying social engineering attacks in enterprise environments.
+            </p>
+
+            <div class="phishing-demo">
+                <div class="phishing-header">
+                    <div class="dot-red"></div>
+                    <div class="dot-yellow"></div>
+                    <div class="dot-green"></div>
+                    <span style="margin-left:8px;" data-en="⚠ SUSPICIOUS EMAIL DETECTED — ANALYSIS MODE" data-pt="⚠ EMAIL SUSPEITO DETECTADO — MODO DE ANÁLISE">⚠ SUSPICIOUS EMAIL DETECTED — ANALYSIS MODE</span>
+                </div>
+                <div class="phishing-body">
+                    <div class="email-line">
+                        <span class="email-field">FROM:</span>
+                        <span class="email-val danger">security-alert@hyundai-autoever.support.ru</span>
+                    </div>
+                    <div class="email-line">
+                        <span class="email-field">TO:</span>
+                        <span class="email-val">employee@hyundai-autoever.com</span>
+                    </div>
+                    <div class="email-line">
+                        <span class="email-field" data-en="SUBJ:" data-pt="ASSUNTO:">SUBJ:</span>
+                        <span class="email-val danger" data-en="[URGENT] Your account will be suspended in 24h" data-pt="[URGENTE] Sua conta será suspensa em 24h">[URGENT] Your account will be suspended in 24h</span>
+                    </div>
+                    <div class="email-body-text" data-en='Dear employee, your corporate credentials require immediate verification. Click <span class="highlight">here to verify</span> or your account will be permanently deactivated. — IT Security Team' data-pt='Prezado colaborador, suas credenciais corporativas precisam de verificação imediata. Clique <span class="highlight">aqui para verificar</span> ou sua conta será desativada. — Equipe de TI'>
+                        Dear employee, your corporate credentials require immediate verification. Click <span class="highlight">here to verify</span> or your account will be permanently deactivated. — IT Security Team
+                    </div>
+                    <div class="threat-badge">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span data-en="THREAT DETECTED: Domain spoofing + Urgency manipulation + Credential harvesting" data-pt="AMEAÇA DETECTADA: Spoofing de domínio + Manipulação de urgência + Roubo de credenciais">THREAT DETECTED: Domain spoofing + Urgency manipulation + Credential harvesting</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!--AWS PROJECTS-->
     <section class="scroll-reveal">
-        <h2 data-en='<i class="fas fa-cloud"></i> Web Applications Deployed on AWS' data-pt='<i class="fas fa-cloud"></i> Aplicações Web Implantadas na AWS'>
+        <h2 data-en='<i class="fas fa-cloud"></i> Web Applications Deployed on AWS'
+            data-pt='<i class="fas fa-cloud"></i> Aplicações Web Implantadas na AWS'>
             <i class="fas fa-cloud"></i> Web Applications Deployed on AWS
         </h2>
         <div class="experience-card">
-            <h3 style="color: var(--secondary)" data-en="JavaScript Browser Games" data-pt="Jogos de Navegador em JavaScript">
+            <h3 data-en="JavaScript Browser Games" data-pt="Jogos de Navegador em JavaScript">
                 JavaScript Browser Games
             </h3>
             <p data-en="• Developed front-end applications using HTML, CSS and JavaScript<br>• Deployed via AWS S3 static hosting<br>• Configured public access and validated performance<br>• Managed manual deployment workflow"
@@ -365,29 +969,36 @@
                 • Configured public access and validated performance<br>
                 • Managed manual deployment workflow
             </p>
-            <div class="social-links" style="margin-top:15px;">
-                <a href="https://gamejs.d2tgahe0ff8806.amplifyapp.com/" target="_blank" class="social-btn" data-en='<i class="fas fa-gamepad"></i> First Game' data-pt='<i class="fas fa-gamepad"></i> Primeiro Jogo'>
+            <div class="social-links" style="margin-top:18px; justify-content:flex-start;">
+                <a href="https://gamejs.d2tgahe0ff8806.amplifyapp.com/" target="_blank" class="social-btn"
+                   data-en='<i class="fas fa-gamepad"></i> First Game'
+                   data-pt='<i class="fas fa-gamepad"></i> Primeiro Jogo'>
                     <i class="fas fa-gamepad"></i> First Game
                 </a>
-                <a href="https://s3.us-east-1.amazonaws.com/shooting.game/game.html" target="_blank" class="social-btn" data-en='<i class="fas fa-gamepad"></i> Second Game' data-pt='<i class="fas fa-gamepad"></i> Segundo Jogo'>
+                <a href="https://s3.us-east-1.amazonaws.com/shooting.game/game.html" target="_blank" class="social-btn"
+                   data-en='<i class="fas fa-gamepad"></i> Second Game'
+                   data-pt='<i class="fas fa-gamepad"></i> Segundo Jogo'>
                     <i class="fas fa-gamepad"></i> Second Game
                 </a>
             </div>
         </div>
     </section>
 
+    <!--EXPERIENCE-->
     <section class="scroll-reveal">
-        <h2 data-en='<i class="fas fa-briefcase"></i> Professional Experience' data-pt='<i class="fas fa-briefcase"></i> Experiência Profissional'>
+        <h2 data-en='<i class="fas fa-briefcase"></i> Professional Experience'
+            data-pt='<i class="fas fa-briefcase"></i> Experiência Profissional'>
             <i class="fas fa-briefcase"></i> Professional Experience
         </h2>
         <div class="experience-card">
-            <h3 style="color: var(--secondary)" data-en="Hyundai AutoEver - Cybersecurity Intern" data-pt="Hyundai AutoEver - Estagiário de Cibersegurança">
-                Hyundai AutoEver - Cybersecurity Intern
+            <h3 data-en="Hyundai AutoEver — Cybersecurity Intern" data-pt="Hyundai AutoEver — Estagiário de Cibersegurança">
+                Hyundai AutoEver — Cybersecurity Intern
             </h3>
-            <p style="font-size: 0.85rem; color: var(--text-dim)" data-en="September/2025 - Present" data-pt="Setembro/2025 - Presente">
-                September/2025 - Present
+            <p style="font-family:'Share Tech Mono',monospace;font-size:0.95rem;color:var(--text-dim);margin-bottom:12px;letter-spacing:1px;"
+               data-en="SEP/2025 — PRESENT" data-pt="SET/2025 — PRESENTE">
+                SEP/2025 — PRESENT
             </p>
-            <p style="margin-top: 10px" data-en="• Supporting firewall and proxy management in enterprise environment<br>• Assisting endpoint monitoring across corporate devices<br>• Developing automation scripts to reduce manual operational tasks<br>• Contributing to security infrastructure support and documentation"
+            <p data-en="• Supporting firewall and proxy management in enterprise environment<br>• Assisting endpoint monitoring across corporate devices<br>• Developing automation scripts to reduce manual operational tasks<br>• Contributing to security infrastructure support and documentation"
                data-pt="• Suporte ao gerenciamento de firewall e proxy em ambiente corporativo<br>• Auxílio no monitoramento de endpoints em dispositivos corporativos<br>• Desenvolvimento de scripts de automação para reduzir tarefas operacionais manuais<br>• Contribuição para suporte e documentação da infraestrutura de segurança">
                 • Supporting firewall and proxy management in enterprise environment<br>
                 • Assisting endpoint monitoring across corporate devices<br>
@@ -399,8 +1010,9 @@
 
 </div>
 
-<footer data-en="&copy; 2026 Kleberson Pastori. All rights reserved." data-pt="&copy; 2026 Kleberson Pastori. Todos os direitos reservados.">
-    &copy; 2026 Kleberson Pastori. All rights reserved.
+<footer data-en="&copy; 2026 Kleberson Pastori — Cybersecurity Engineer — All systems secure."
+        data-pt="&copy; 2026 Kleberson Pastori — Engenheiro de Cibersegurança — Todos os sistemas seguros.">
+    &copy; 2026 Kleberson Pastori — Cybersecurity Engineer — All systems secure.
 </footer>
 
 <a href="https://wa.me/5519982260199" class="fab-contact" target="_blank">
@@ -408,35 +1020,72 @@
 </a>
 
 <script>
+//MATRIX RAIN
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+let cols, drops;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols = Math.floor(canvas.width / 16);
+    drops = new Array(cols).fill(1);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const matrixChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF<>{}[]|/\\%$#@!?01';
+
+function drawMatrix() {
+    ctx.fillStyle = 'rgba(5,10,14,0.055)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '14px Share Tech Mono, monospace';
+    for (let i = 0; i < drops.length; i++) {
+        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+        const bright = Math.random() > 0.95;
+        ctx.fillStyle = bright ? '#ffffff' : (Math.random() > 0.5 ? '#00ff88' : '#00aa55');
+        ctx.fillText(char, i * 16, drops[i] * 16);
+        if (drops[i] * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+    }
+}
+setInterval(drawMatrix, 50);
+
+//LIVE TIME
+function updateTime() {
+    const now = new Date();
+    const t = now.toTimeString().slice(0,8);
+    const el = document.getElementById('live-time');
+    if (el) el.textContent = t;
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// SCROLL
 function handleScroll() {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    document.getElementById("progress-bar").style.width = (winScroll / height) * 100 + "%";
-
+    document.getElementById('progress-bar').style.width = (winScroll / height) * 100 + '%';
     document.querySelectorAll('section').forEach(sec => {
         const rect = sec.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-            sec.classList.add('visible');
-        }
+        if (rect.top < window.innerHeight - 80) sec.classList.add('visible');
     });
 }
 window.addEventListener('scroll', handleScroll);
 window.onload = handleScroll;
 
+// LANGUAGE
 function setLanguage(lang) {
     document.documentElement.lang = lang === 'pt' ? 'pt-br' : 'en';
-    
-    document.querySelectorAll("[data-en]").forEach(el => {
-        el.innerHTML = el.getAttribute("data-" + lang);
+    document.querySelectorAll('[data-en]').forEach(el => {
+        el.innerHTML = el.getAttribute('data-' + lang);
     });
-
-    document.getElementById('btn-en').classList.remove('active');
-    document.getElementById('btn-pt').classList.remove('active');
-    document.getElementById('btn-' + lang).classList.add('active');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+    localStorage.setItem('lang', lang);
 }
-
-setLanguage("en");
+const savedLang = localStorage.getItem('lang');
+if (savedLang) setLanguage(savedLang);
 </script>
-
 </body>
 </html>
