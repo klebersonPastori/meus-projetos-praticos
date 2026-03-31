@@ -8,7 +8,7 @@
 
 [![Author](https://img.shields.io/badge/Author-Kleberson_Pastori-00FF88?style=for-the-badge)](https://github.com/klebersonPastori)
 [![Focus](https://img.shields.io/badge/Focus-EngenhariaDeSofware_%7C_Desenvolvimento-0066CC?style=for-the-badge)]()
-[![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_CSharp_%7C_JS-FF9900?style=for-the-badge)]()
+[![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_CSharp_%7C_WEB_%7C_JS-FF9900?style=for-the-badge)]()
 [![Portfolio](https://img.shields.io/badge/Portfólio-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
 
 </div>
