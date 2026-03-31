@@ -1,101 +1,164 @@
+# 🛡️ Kleberson Pastori — Dev & DevSecOps Portfolio
+
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&pause=1000&color=00FF88&center=true&vCenter=true&width=700&lines=Kleberson+Pastori;DevSecOps+%7C+Software+Engineering;Cybersecurity+%7C+Cloud+%7C+Python;Automating+Security+Workflows." alt="Typing SVG" />
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=00FF88&center=true&vCenter=true&width=700&lines=DevSecOps+Engineer;Cybersecurity+%7C+Cloud+%7C+Python;Automating+Security+Workflows;Building+Secure+Systems)](https://git.io/typing-svg)
+
+<br/>
 
 [![Author](https://img.shields.io/badge/Author-Kleberson_Pastori-00FF88?style=for-the-badge)](https://github.com/klebersonPastori)
 [![Focus](https://img.shields.io/badge/Focus-DevSecOps_%7C_Cybersecurity-0066CC?style=for-the-badge)]()
 [![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_JS-FF9900?style=for-the-badge)]()
-[![Portfolio](https://img.shields.io/badge/Portf%C3%B3lio-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
+[![Portfolio](https://img.shields.io/badge/Portfólio-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
 
 </div>
 
 ---
 
-## `$ whoami`
+## 🚀 Sobre o Repositório
 
-Repositório central da minha trajetória técnica unindo **Desenvolvimento e Cibersegurança**. Sou estudante de **Engenharia de Software (Estácio)**, com foco em construir e proteger infraestruturas corporativas. 
+Este é meu repositório central que conecta **Desenvolvimento de Software + Cibersegurança**, com foco em soluções práticas para ambientes reais.
 
-Meu objetivo aqui é desenvolver soluções que resolvem problemas reais de segurança, aplicando automação com Python, práticas de **DevSecOps** e arquitetura segura em ambientes Cloud (AWS/Azure).
+Sou estudante de **Engenharia de Software (Estácio)** e atuo construindo projetos voltados a:
 
----
-
-## `$ ls -la projetos/`
-
----
-
-### 🛡️ [DESTAQUE] CSIRT WebSec Phishing Scanner
-> **Scanner automatizado de Phishing e Threat Intelligence via CLI**
-
-Ferramenta de linha de comando desenvolvida em **Python** para triagem de URLs e e-mails suspeitos. A engenharia por trás do projeto envolve a identificação de credential spoofing, análise de heurísticas em JavaScript, validação de certificados TLS e integração via API com o VirusTotal. Exporta relatórios executivos (HTML/JSON) estruturados para operações de segurança.
-
-`Python` `DevSecOps` `Threat Intel` `Automation` `API Integration`
+- 🛡️ Segurança ofensiva e defensiva  
+- ⚙️ Automação de processos com Python  
+- ☁️ Arquitetura segura em Cloud (AWS/Azure)  
+- 🔐 Cultura DevSecOps aplicada ao ciclo de vida (SDLC)  
 
 ---
 
-### 🔍 Cyber Malicious File Risk Analyzer
-> **Scanner local de arquivos potencialmente maliciosos**
+## 🧠 Filosofia Técnica
 
-Script em **Python** para varredura recursiva de diretórios locais, focando na identificação de extensões e artefatos de alto risco (`.exe`, `.bat`, `.vbs`, `.ps1`, `.dll`). Gera outputs estruturados com nível de severidade para apoiar análises forenses rápidas e triagem de endpoints.
-
-`Python` `Automation` `Threat Detection` `DFIR` `Blue Team`
+> Segurança não é uma etapa.  
+> É parte da arquitetura desde a primeira linha de código.
 
 ---
 
-### 🖥️ Network Troubleshooting Tools GUI
-> **Interface gráfica para diagnóstico de redes corporativas**
-
-Aplicativo desktop em **Python + PySide6** com execução **assíncrona** dos principais comandos de rede (Ping, Tracert, Netstat, NSLookup). Output em tempo real sem travamento de threads da UI. Um projeto que une desenvolvimento front-end desktop com utilitários de infraestrutura.
-
-`Python` `PySide6` `Asyncio` `Software Development` `Networking`
+## 📂 Projetos
 
 ---
 
-### ☁️ Active Directory Lab na AWS
-> **Laboratório corporativo de AD em nuvem para estudos de arquitetura**
+### 🛡️ CSIRT WebSec Phishing Scanner *(Projeto Principal)*  
+**Scanner automatizado de Phishing e Threat Intelligence via CLI**
 
-Provisionamento de instância **EC2 (Windows Server)** como Domain Controller, configuração de DNS interno, Organizational Units, usuários e GPOs. Voltado para estudo de superfície de ataque, hardening e monitoramento de identidades em nuvem.
+Ferramenta em Python para triagem de URLs e e-mails suspeitos, com foco em análise de ameaças reais.
 
-`AWS EC2` `Windows Server` `Active Directory` `Identity Management` `Cloud Security`
+**Principais capacidades:**
+- Detecção de credential spoofing  
+- Análise heurística de JavaScript malicioso  
+- Validação de certificados TLS  
+- Integração com API (VirusTotal)  
+- Exportação de relatórios (HTML/JSON)  
 
----
-
-### 📋 Incident Report — NIST CSF (DDoS/ICMP Flood)
-> **Análise técnica e resposta a incidente seguindo o framework global**
-
-Documentação completa de resposta a ataque **DDoS via ICMP Flood**, seguindo as 5 funções do NIST Cybersecurity Framework: *Identify → Protect → Detect → Respond → Recover*. Formato profissional de report estruturado para engenharia de segurança e liderança.
-
-`NIST CSF` `Incident Response` `Security Engineering` `Network Security`
+**Stack:** `Python` `DevSecOps` `Threat Intel` `API Integration`  
 
 ---
 
-## `$ cat stack.txt`
+### 🔍 Cyber Malicious File Risk Analyzer  
+**Scanner local para identificação de arquivos suspeitos**
+
+Ferramenta voltada para análise rápida de endpoints e triagem forense.
+
+**Funcionalidades:**
+- Varredura recursiva de diretórios  
+- Identificação de extensões críticas (`.exe`, `.bat`, `.ps1`, etc.)  
+- Classificação por nível de risco  
+
+**Stack:** `Python` `DFIR` `Threat Detection` `Automation`  
+
+---
+
+### 🖥️ Network Troubleshooting Tools (GUI Assíncrona)  
+**Diagnóstico de redes com interface gráfica responsiva**
+
+Aplicação desktop que executa comandos de rede sem bloquear a interface.
+
+**Destaques técnicos:**
+- Execução assíncrona (threads/processos)  
+- Output em tempo real  
+- Ferramentas: Ping, Tracert, Netstat, NSLookup  
+
+**Stack:** `Python` `PySide6` `Async Programming` `Networking`  
+
+---
+
+### ☁️ Active Directory Lab na AWS  
+**Laboratório corporativo para estudo de identidade e segurança**
+
+Ambiente em nuvem simulando infraestrutura real de empresa.
+
+**Implementações:**
+- Domain Controller em EC2 (Windows Server)  
+- DNS interno  
+- GPOs e controle de usuários  
+- Estrutura de Organizational Units  
+
+**Stack:** `AWS` `Active Directory` `Windows Server` `Cloud Security`  
+
+---
+
+### 📋 Incident Report — NIST CSF (DDoS / ICMP Flood)  
+**Resposta a incidente seguindo padrão internacional**
+
+Análise estruturada com base no framework NIST.
+
+**Cobertura:**
+- Identify → Protect → Detect → Respond → Recover  
+- Documentação técnica e executiva  
+- Foco em engenharia de segurança  
+
+**Stack:** `NIST CSF` `Incident Response` `Network Security`  
+
+---
+
+## ⚙️ Stack Tecnológica
 
 <div align="center">
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
-![Linux Mint](https://img.shields.io/badge/Linux_Mint-87CF3E?style=flat-square&logo=linux-mint&logoColor=white)
-![Windows Server](https://img.shields.io/badge/Windows_Server-0078D6?style=flat-square&logo=windows&logoColor=white)
-![Active Directory](https://img.shields.io/badge/Active_Directory-0078D4?style=flat-square&logo=microsoft&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+![Python](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=python)
+![JavaScript](https://img.shields.io/badge/JavaScript-0d1117?style=for-the-badge&logo=javascript)
+![AWS](https://img.shields.io/badge/AWS-0d1117?style=for-the-badge&logo=amazonaws)
+![Linux](https://img.shields.io/badge/Linux-0d1117?style=for-the-badge&logo=linux)
+![Windows Server](https://img.shields.io/badge/Windows_Server-0d1117?style=for-the-badge&logo=windows)
+![Active Directory](https://img.shields.io/badge/Active_Directory-0d1117?style=for-the-badge&logo=microsoft)
+![Git](https://img.shields.io/badge/Git-0d1117?style=for-the-badge&logo=git)
 
 </div>
 
 ---
 
-## `$ ./contato.sh`
+## 📊 Objetivo do Repositório
+
+Este repositório não é apenas código — é uma demonstração prática de:
+
+- Capacidade de resolver problemas reais  
+- Pensamento estruturado em segurança  
+- Integração entre desenvolvimento e infraestrutura  
+- Visão profissional de engenharia  
+
+---
+
+## 📫 Contato
 
 <div align="center">
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kleberson-pastori-5b11b3119)
-[![Portfólio](https://img.shields.io/badge/Portf%C3%B3lio_Web-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kleber-pastori@hotmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0d1117?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/kleberson-pastori-5b11b3119)
+
+[![Portfólio](https://img.shields.io/badge/Portfólio_Web-0d1117?style=for-the-badge&logo=googlechrome)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
+
+[![Email](https://img.shields.io/badge/Email-0d1117?style=for-the-badge&logo=gmail)](mailto:kleber-pastori@hotmail.com)
+
+</div>
+
+---
+
+<div align="center">
+
+### 🔐 "Secure by design. Automated by mindset."
 
 <br/>
 
 *Atualizado em Março de 2026*
-
-*"A tecnologia é a ferramenta, a lógica é o caminho e a segurança é a prioridade."*
 
 </div>
