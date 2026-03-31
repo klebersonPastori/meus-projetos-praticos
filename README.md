@@ -2,12 +2,12 @@
 
 <div align="center">
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=00FF88&center=true&vCenter=true&width=700&lines=DevSecOps+Engineer;Cybersecurity+%7C+Cloud+%7C+Python;Automating+Security+Workflows;Building+Secure+Systems)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=00FF88&center=true&vCenter=true&width=700&lines=Software+Engineer;DevOps+%7C+Cloud+%7C+Python;Automating+Security+Workflows;Building+Secure+Systems)](https://git.io/typing-svg)
 
 <br/>
 
 [![Author](https://img.shields.io/badge/Author-Kleberson_Pastori-00FF88?style=for-the-badge)](https://github.com/klebersonPastori)
-[![Focus](https://img.shields.io/badge/Focus-DevSecOps_%7C_Cybersecurity-0066CC?style=for-the-badge)]()
+[![Focus](https://img.shields.io/badge/Focus-EngenhariaDeSofware_%7C_Desenvolvimento-0066CC?style=for-the-badge)]()
 [![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_JS-FF9900?style=for-the-badge)]()
 [![Portfolio](https://img.shields.io/badge/Portfólio-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
 
@@ -118,6 +118,7 @@ Análise estruturada com base no framework NIST.
 
 ![Python](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=python)
 ![JavaScript](https://img.shields.io/badge/JavaScript-0d1117?style=for-the-badge&logo=javascript)
+![C#](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=c#)
 ![AWS](https://img.shields.io/badge/AWS-0d1117?style=for-the-badge&logo=amazonaws)
 ![Linux](https://img.shields.io/badge/Linux-0d1117?style=for-the-badge&logo=linux)
 ![Windows Server](https://img.shields.io/badge/Windows_Server-0d1117?style=for-the-badge&logo=windows)
