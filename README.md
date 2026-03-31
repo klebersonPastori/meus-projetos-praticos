@@ -118,7 +118,7 @@ Análise estruturada com base no framework NIST.
 
 ![Python](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=python)
 ![JavaScript](https://img.shields.io/badge/JavaScript-0d1117?style=for-the-badge&logo=javascript)
-![C#](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=c#)
+![C#](https://img.shields.io/badge/C#-0d1117?style=for-the-badge&logo=c#)
 ![AWS](https://img.shields.io/badge/AWS-0d1117?style=for-the-badge&logo=amazonaws)
 ![Linux](https://img.shields.io/badge/Linux-0d1117?style=for-the-badge&logo=linux)
 ![Windows Server](https://img.shields.io/badge/Windows_Server-0d1117?style=for-the-badge&logo=windows)
