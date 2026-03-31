@@ -8,7 +8,7 @@
 
 [![Author](https://img.shields.io/badge/Author-Kleberson_Pastori-00FF88?style=for-the-badge)](https://github.com/klebersonPastori)
 [![Focus](https://img.shields.io/badge/Focus-EngenhariaDeSofware_%7C_Desenvolvimento-0066CC?style=for-the-badge)]()
-[![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_JS-FF9900?style=for-the-badge)]()
+[![Stack](https://img.shields.io/badge/Stack-Python_%7C_AWS_%7C_CSharp_%7C_JS-FF9900?style=for-the-badge)]()
 [![Portfolio](https://img.shields.io/badge/Portfólio-Live-00FF88?style=for-the-badge&logo=googlechrome&logoColor=black)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
 
 </div>
@@ -118,7 +118,7 @@ Análise estruturada com base no framework NIST.
 
 ![Python](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=python)
 ![JavaScript](https://img.shields.io/badge/JavaScript-0d1117?style=for-the-badge&logo=javascript)
-![C#](https://img.shields.io/badge/C#-0d1117?style=for-the-badge&logo=c#)
+![C#](https://img.shields.io/badge/CSharp-0d1117?style=for-the-badge&logo=csharp&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-0d1117?style=for-the-badge&logo=amazonaws)
 ![Linux](https://img.shields.io/badge/Linux-0d1117?style=for-the-badge&logo=linux)
 ![Windows Server](https://img.shields.io/badge/Windows_Server-0d1117?style=for-the-badge&logo=windows)
