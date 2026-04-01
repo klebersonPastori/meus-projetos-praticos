@@ -1,0 +1,352 @@
+[
+  {
+    "Nome": "KLEBERSON PASTORI",
+    "Cracha": 1,
+    "TipoCesta": "KIT EXECUTIVO - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "RODRIGO SANTOS",
+    "Cracha": 2,
+    "TipoCesta": "KIT NA BRASA - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "MARCELO OLIVEIRA",
+    "Cracha": 3,
+    "TipoCesta": "KIT EXECUTIVO - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "BEATRIZ SOUZA",
+    "Cracha": 4,
+    "TipoCesta": "KIT NA BRASA - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "FERNANDO COSTA",
+    "Cracha": 5,
+    "TipoCesta": "KIT EXECUTIVO - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "AMANDA MARTINS",
+    "Cracha": 6,
+    "TipoCesta": "KIT NA BRASA - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "RICARDO PEREIRA",
+    "Cracha": 7,
+    "TipoCesta": "KIT EXECUTIVO - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "CAMILA RODRIGUES",
+    "Cracha": 8,
+    "TipoCesta": "KIT NA BRASA - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "JULIANA LOPES",
+    "Cracha": 9,
+    "TipoCesta": "KIT VEG - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "LUCAS FERREIRA",
+    "Cracha": 10,
+    "TipoCesta": "KIT EXECUTIVO - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "GABRIEL SILVA",
+    "Cracha": 11,
+    "TipoCesta": "KIT NA BRASA - A1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "PATR\u00CDCIA GOMES",
+    "Cracha": 12,
+    "TipoCesta": "KIT EXECUTIVO - A2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "BRUNO ALVES",
+    "Cracha": 13,
+    "TipoCesta": "KIT NA BRASA - B1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "LARISSA MELLO",
+    "Cracha": 14,
+    "TipoCesta": "KIT EXECUTIVO - B2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "TIAGO BARBOSA",
+    "Cracha": 15,
+    "TipoCesta": "KIT EXECUTIVO - Est\u00E1gio * Per\u00EDodo Manh\u00E3 e Tarde 08:00/15:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "VANESSA RIBEIRO",
+    "Cracha": 16,
+    "TipoCesta": "KIT NA BRASA - Est\u00E1gio * Per\u00EDodo Manh\u00E3 e Tarde 08:00/15:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "FELIPE CARDOSO",
+    "Cracha": 17,
+    "TipoCesta": "KIT VEG - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "DANIELA TEIXEIRA",
+    "Cracha": 18,
+    "TipoCesta": "KIT EXECUTIVO - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "ANDR\u00C9 MACHADO",
+    "Cracha": 19,
+    "TipoCesta": "KIT NA BRASA - ADM * Administrativo 07:00/17:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "RENATA FARIAS",
+    "Cracha": 20,
+    "TipoCesta": "KIT EXECUTIVO - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "IGOR MORAES",
+    "Cracha": 21,
+    "TipoCesta": "KIT NA BRASA - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "SABRINA MENDES",
+    "Cracha": 22,
+    "TipoCesta": "KIT EXECUTIVO - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "LEONARDO FREITAS",
+    "Cracha": 23,
+    "TipoCesta": "KIT NA BRASA - B2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "PRISCILA NUNES",
+    "Cracha": 24,
+    "TipoCesta": "KIT EXECUTIVO - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "EDUARDO VIEIRA",
+    "Cracha": 25,
+    "TipoCesta": "KIT NA BRASA - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "TATIANE LIMA",
+    "Cracha": 26,
+    "TipoCesta": "KIT VEG - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "S\u00C9RGIO RAMOS",
+    "Cracha": 27,
+    "TipoCesta": "KIT EXECUTIVO - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "MONIQUE CASTRO",
+    "Cracha": 28,
+    "TipoCesta": "KIT NA BRASA - A1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "DOUGLAS SANTOS",
+    "Cracha": 29,
+    "TipoCesta": "KIT EXECUTIVO - A2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "CAROLINA DINIZ",
+    "Cracha": 30,
+    "TipoCesta": "KIT NA BRASA - B1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "VITOR SOUZA",
+    "Cracha": 31,
+    "TipoCesta": "KIT EXECUTIVO - B2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "B\u00C1RBARA LUZ",
+    "Cracha": 32,
+    "TipoCesta": "KIT NA BRASA - Est\u00E1gio * Per\u00EDodo Manh\u00E3 e Tarde 08:00/15:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "CAIO HENRIQUE",
+    "Cracha": 33,
+    "TipoCesta": "KIT EXECUTIVO - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "LET\u00CDCIA CORREIA",
+    "Cracha": 34,
+    "TipoCesta": "KIT NA BRASA - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "RAFAEL JUNIOR",
+    "Cracha": 35,
+    "TipoCesta": "KIT VEG - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "J\u00C9SSICA ANDRADE",
+    "Cracha": 36,
+    "TipoCesta": "KIT EXECUTIVO - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "GUSTAVO PINHEIRO",
+    "Cracha": 37,
+    "TipoCesta": "KIT NA BRASA - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "PAOLA BRITO",
+    "Cracha": 38,
+    "TipoCesta": "KIT EXECUTIVO - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "ROBERTO DUARTE",
+    "Cracha": 39,
+    "TipoCesta": "KIT NA BRASA - A1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "ALINE PEIXOTO",
+    "Cracha": 40,
+    "TipoCesta": "KIT EXECUTIVO - A2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "WESLEY MOREIRA",
+    "Cracha": 41,
+    "TipoCesta": "KIT NA BRASA - B1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "THA\u00CDS FONSECA",
+    "Cracha": 42,
+    "TipoCesta": "KIT EXECUTIVO - B2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "MATHEUS ARA\u00DAJO",
+    "Cracha": 43,
+    "TipoCesta": "KIT NA BRASA - 002 * 2\u00BA TURNO 15:43/01:04",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "GABRIELA NEVES",
+    "Cracha": 44,
+    "TipoCesta": "KIT EXECUTIVO - 003 * 3\u00BA TURNO 00:59/06:05",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "SAMUEL NASCIMENTO",
+    "Cracha": 45,
+    "TipoCesta": "KIT NA BRASA - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "\u00C9RICA MOURA",
+    "Cracha": 46,
+    "TipoCesta": "KIT VEG - ADM * Administrativo 08:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "ALAN DERICK",
+    "Cracha": 47,
+    "TipoCesta": "KIT EXECUTIVO - 001 * 1\u00BA Turno 06:00/15:48",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "CASSIA REGINA",
+    "Cracha": 48,
+    "TipoCesta": "KIT NA BRASA - A1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "PATRICK VAZ",
+    "Cracha": 49,
+    "TipoCesta": "KIT EXECUTIVO - A2 Inje\u00E7\u00E3o Tarde - 18:00/06:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  },
+  {
+    "Nome": "ADRIANO SALES",
+    "Cracha": 50,
+    "TipoCesta": "KIT NA BRASA - B1 Inje\u00E7\u00E3o Manh\u00E3 - 06:00/18:00",
+    "Retirou": false,
+    "LogRetirada": ""
+  }
+]
