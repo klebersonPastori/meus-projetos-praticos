@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Ferramentas de Rede
+Network Tools
 Autor: Kleberson Pastori
 """
 
@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 )
 
 # --- Constantes e Estilos ---
-APP_TITLE   = "Ferramentas de Rede"
+APP_TITLE   = "NETWORK TOOLS"
 APP_VERSION = "2.5"
 IS_WINDOWS  = os.name == "nt"
 
@@ -105,7 +105,7 @@ class NetworkGUI(QMainWindow):
         header_layout = QVBoxLayout(header_widget)
         title = QLabel(APP_TITLE); title.setObjectName("app-title")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        subtitle = QLabel(f"Infra & Security  ·  v{APP_VERSION}  ·  by Kleberson Pastori")
+        subtitle = QLabel(f"Infra & Security Troubleshoot ·  v{APP_VERSION}  ·  by Kleberson Pastori")
         subtitle.setObjectName("app-subtitle")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         header_layout.addWidget(title)
