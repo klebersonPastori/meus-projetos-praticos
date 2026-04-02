@@ -25,7 +25,9 @@ logs estruturados e leitura otimizada.
 
 > 📌 Recomendado adicionar um GIF aqui futuramente:
 
-    ![Preview](./assets/demo.png)
+ <p align="center">
+  <img src="https://raw.githubusercontent.com/klebersonPastori/meus-projetos-praticos/main/python-automation/python-network-tools/assets/demo.png" width="900"/>
+</p>
 
 ------------------------------------------------------------------------
 
