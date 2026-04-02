@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-AutoEver - Ferramentas de Rede
+Ferramentas de Rede
 Autor: Kleberson Pastori
 """
 
@@ -8,292 +8,246 @@ import os
 import re
 import sys
 from datetime import datetime
+from typing import Optional
 
 from PySide6.QtCore import Qt, QProcess
-from PySide6.QtGui import QTextCursor, QFont, QColor
+from PySide6.QtGui import QTextCursor, QColor, QIcon
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-    QLineEdit, QPushButton, QTextEdit, QLabel, QMessageBox, QStatusBar
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+    QLineEdit, QPushButton, QTextEdit, QLabel, QMessageBox, QStatusBar, QFrame
 )
 
-IS_WINDOWS = os.name == 'nt'
-DIVISOR_LEN = 80  # tamanho da linha divisória
+# --- Constantes e Estilos ---
+APP_TITLE   = "Ferramentas de Rede"
+APP_VERSION = "2.5"
+IS_WINDOWS  = os.name == "nt"
 
-def agora():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+ACCENT, ACCENT_DARK = "#2563EB", "#1D4ED8"
+RED, GREEN = "#DC2626", "#16A34A"
+GRAY_100, GRAY_200, GRAY_400, GRAY_700, GRAY_900 = "#F3F4F6", "#E5E7EB", "#9CA3AF", "#374151", "#111827"
+WHITE = "#FFFFFF"
 
-def validar_ip(ip: str) -> bool:
-    """Valida formato IPv4 e faixa 0..255."""
-    padrao = r'^(?:\d{1,3}\.){3}\d{1,3}$'
-    if not re.match(padrao, ip):
-        return False
-    try:
-        return all(0 <= int(x) <= 255 for x in ip.split('.'))
-    except ValueError:
-        return False
+STYLESHEET = f"""
+QMainWindow, QWidget {{ background-color: {WHITE}; color: {GRAY_900}; font-family: 'Segoe UI', sans-serif; font-size: 13px; }}
+QLineEdit {{ background-color: {WHITE}; border: 1.5px solid {GRAY_200}; border-radius: 8px; padding: 7px 12px; }}
+QLineEdit:focus {{ border-color: {ACCENT}; }}
+QLabel {{ color: {GRAY_700}; font-size: 12px; font-weight: 600; }}
 
-def validar_porta(porta: str) -> bool:
-    return porta.isdigit() and 1 <= int(porta) <= 65535
+/* Título Centralizado e Azul */
+QLabel#app-title {{ 
+    font-size: 26px; 
+    font-weight: 800; 
+    color: {ACCENT}; 
+    letter-spacing: -1px;
+}}
+QLabel#app-subtitle {{ 
+    font-size: 13px; 
+    font-weight: 400; 
+    color: {GRAY_400}; 
+}}
+
+QPushButton {{ background-color: {GRAY_100}; color: {GRAY_700}; border: 1.5px solid {GRAY_200}; border-radius: 8px; padding: 8px 14px; font-weight: 600; }}
+QPushButton:hover {{ background-color: {ACCENT}; color: {WHITE}; border-color: {ACCENT}; }}
+
+/* Botões Específicos */
+QPushButton#btn-exit {{ color: {RED}; }}
+QPushButton#btn-exit:hover {{ background-color: {RED}; color: {WHITE}; }}
+QPushButton#btn-stop {{ color: {WHITE}; background-color: {RED}; border-color: {RED}; }}
+QPushButton#btn-stop:hover {{ background-color: "#B91C1C"; }}
+
+QTextEdit {{ background-color: {GRAY_100}; border: 1.5px solid {GRAY_200}; border-radius: 10px; padding: 10px; font-family: 'Consolas'; font-size: 12px; }}
+QStatusBar {{ background-color: {GRAY_100}; color: {GRAY_400}; font-size: 11px; border-top: 1px solid {GRAY_200}; }}
+"""
+
+def timestamp() -> str: return datetime.now().strftime("%H:%M:%S")
+
+def validate_ip(ip: str) -> bool:
+    if not re.fullmatch(r"(\d{1,3}\.){3}\d{1,3}", ip): return False
+    return all(0 <= int(o) <= 255 for o in ip.split("."))
+
+def validate_port(port: str) -> bool: return port.isdigit() and 1 <= int(port) <= 65535
+
+class FieldRow(QWidget):
+    def __init__(self, label: str, placeholder: str):
+        super().__init__()
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        lbl = QLabel(label); lbl.setFixedWidth(60)
+        lbl.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.edit = QLineEdit(); self.edit.setPlaceholderText(placeholder)
+        layout.addWidget(lbl); layout.addWidget(self.edit)
 
 class NetworkGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Comandos de Rede - AutoeEver")
-        self.resize(900, 560)
+        self.setWindowTitle(APP_TITLE)
+        
+        # Ícone da janela principal
+        icon_path = os.path.join(os.path.dirname(__file__), "EthernetCable_icon.ico")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        
+        self.setMinimumSize(960, 700)
+        self.setStyleSheet(STYLESHEET)
 
-        # Status bar
-        self.status = QStatusBar()
-        self.setStatusBar(self.status)
-        self.status.showMessage("Pronto")
+        self._proc = QProcess(self)
+        self._proc.readyReadStandardOutput.connect(self._on_stdout)
+        self._proc.finished.connect(self._on_finished)
 
-        # Processo
-        self.proc = QProcess(self)
-        self.proc.readyReadStandardOutput.connect(self.on_stdout)
-        self.proc.readyReadStandardError.connect(self.on_stderr)
-        self.proc.finished.connect(self.on_finished)
-        self.proc.errorOccurred.connect(self.on_error)
+        root = QWidget()
+        self.setCentralWidget(root)
+        outer = QVBoxLayout(root)
+        outer.setContentsMargins(24, 20, 24, 16)
+        outer.setSpacing(15)
 
-        # --- Área central ---
-        central = QWidget()
-        self.setCentralWidget(central)
-        main_layout = QVBoxLayout(central)
+        # Header Centralizado em Azul
+        header_widget = QWidget()
+        header_layout = QVBoxLayout(header_widget)
+        title = QLabel(APP_TITLE); title.setObjectName("app-title")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        subtitle = QLabel(f"Infra & Security  ·  v{APP_VERSION}  ·  by Kleberson Pastori")
+        subtitle.setObjectName("app-subtitle")
+        subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        header_layout.addWidget(title)
+        header_layout.addWidget(subtitle)
+        outer.addWidget(header_widget)
 
-        # Cabeçalho
-        header = QLabel("Console de comandos de rede")
-        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        main_layout.addWidget(header)
+        # Inputs
+        row_f = QHBoxLayout()
+        self._f_ip = FieldRow("IP", "Ex: 192.168.1.1")
+        self._f_dom = FieldRow("Domínio", "Ex: google.com")
+        self._f_port = FieldRow("Porta", "Ex: 443")
+        row_f.addWidget(self._f_ip); row_f.addWidget(self._f_dom); row_f.addWidget(self._f_port)
+        outer.addLayout(row_f)
 
-        # Formulário
-        form = QFormLayout()
-        self.input_ip = QLineEdit(); self.input_ip.setPlaceholderText("Ex.: 8.8.8.8")
-        self.input_dom = QLineEdit(); self.input_dom.setPlaceholderText("Ex.: google.com")
-        self.input_porta = QLineEdit(); self.input_porta.setPlaceholderText("Ex.: 443")
-        form.addRow("IP:", self.input_ip)
-        form.addRow("Domínio:", self.input_dom)
-        form.addRow("Porta:", self.input_porta)
-        main_layout.addLayout(form)
+        outer.addWidget(self._line())
 
-        # Botões (linha 1)
-        btns_1 = QHBoxLayout()
-        self.btn_ping = QPushButton("PING")
-        self.btn_ipconfig = QPushButton("IPCONFIG /ALL")
-        self.btn_hostname = QPushButton("HOSTNAME")
-        self.btn_tracert = QPushButton("TRACERT")
-        self.btn_telnet = QPushButton("TELNET (Test-NetConnection)")
-        self.btn_nslookup = QPushButton("NSLOOKUP")
-        for b in (self.btn_ping, self.btn_ipconfig, self.btn_hostname,
-                  self.btn_tracert, self.btn_telnet, self.btn_nslookup):
-            btns_1.addWidget(b)
-        main_layout.addLayout(btns_1)
+        # Grade de Comandos (Simples para Complexos)
+        grid = QGridLayout(); grid.setSpacing(8)
+        commands = [
+            ("HOSTNAME", self._do_hostname), ("IPCONFIG /ALL", self._do_ipconfig),
+            ("ROUTE PRINT", self._do_route), ("NETSTAT -AN", self._do_netstat),
+            ("ARP -A", self._do_arp), ("GPRESULT /R", self._do_gpresult),
+            ("PING", self._do_ping), ("NSLOOKUP", self._do_nslookup),
+            ("TRACERT", self._do_tracert), ("REVERSE DNS (IP)", self._do_reverse_dns),
+            ("TEST-PORTA (PS)", self._do_telnet), ("CONEXÃO RDP", self._do_rdp),
+            ("ABRIR CMD", self._do_cmd)
+        ]
 
-        # Botões (linha 2)
-        btns_2 = QHBoxLayout()
-        self.btn_netstat = QPushButton("NETSTAT -AN")
-        self.btn_arp = QPushButton("ARP -A")
-        self.btn_route = QPushButton("ROUTE PRINT")
-        self.btn_gpresult = QPushButton("GPRESULT /R")
-        self.btn_cmd = QPushButton("Abrir CMD")
-        self.btn_rdp = QPushButton("Abrir conexão RDP")
-        for b in (self.btn_netstat, self.btn_arp, self.btn_route,
-                  self.btn_gpresult, self.btn_cmd, self.btn_rdp):
-            btns_2.addWidget(b)
-        main_layout.addLayout(btns_2)
+        for i, (label, slot) in enumerate(commands):
+            btn = QPushButton(label); btn.clicked.connect(slot)
+            btn.setMinimumHeight(38)
+            grid.addWidget(btn, i // 5, i % 5)
+        
+        outer.addLayout(grid)
+        outer.addWidget(self._line())
+        
+        self._console = QTextEdit(); self._console.setReadOnly(True)
+        outer.addWidget(self._console, stretch=1)
 
-        # Console (texto simples)
-        self.console = QTextEdit()
-        self.console.setReadOnly(True)
-        self.console.setPlaceholderText("Saída dos comandos aparecerá aqui")
-        font = QFont()
-        font.setPointSize(11)  # tamanho da fonte
-        # font.setFamily("Consolas")  # opcional: monoespaçada
-        self.console.setFont(font)
-        main_layout.addWidget(self.console)
+        # Footer
+        footer = QHBoxLayout()
+        
+        # Botões da esquerda
+        btn_stop = QPushButton("PARAR")
+        btn_stop.setObjectName("btn-stop")
+        btn_stop.setMinimumWidth(120)
+        btn_stop.clicked.connect(self._stop_process)
+        
+        btn_clear = QPushButton("Limpar Console")
+        btn_clear.clicked.connect(self._console.clear)
+        
+        # Botão da direita
+        btn_exit = QPushButton("Sair")
+        btn_exit.setObjectName("btn-exit")
+        btn_exit.clicked.connect(self.close)
 
-        # Ações secundárias
-        secondary = QHBoxLayout()
-        self.btn_limpar = QPushButton("Limpar Console")
-        self.btn_about = QPushButton("Sobre")
-        self.btn_sair = QPushButton("Sair")
-        secondary.addWidget(self.btn_limpar)
-        secondary.addWidget(self.btn_about)
-        secondary.addStretch()
-        secondary.addWidget(self.btn_sair)
-        main_layout.addLayout(secondary)
+        footer.addWidget(btn_stop)
+        footer.addWidget(btn_clear)
+        footer.addStretch()
+        footer.addWidget(btn_exit)
+        outer.addLayout(footer)
 
-        # Conectar sinais
-        self.btn_ping.clicked.connect(self.do_ping)
-        self.btn_ipconfig.clicked.connect(self.do_ipconfig)
-        self.btn_hostname.clicked.connect(self.do_hostname)
-        self.btn_tracert.clicked.connect(self.do_tracert)
-        self.btn_telnet.clicked.connect(self.do_telnet)
-        self.btn_nslookup.clicked.connect(self.do_nslookup)
-        self.btn_netstat.clicked.connect(self.do_netstat)
-        self.btn_arp.clicked.connect(self.do_arp)
-        self.btn_route.clicked.connect(self.do_route)
-        self.btn_gpresult.clicked.connect(self.do_gpresult)
-        self.btn_cmd.clicked.connect(self.do_cmd)
-        self.btn_rdp.clicked.connect(self.do_rdp)
-        self.btn_limpar.clicked.connect(self.console.clear)
-        self.btn_about.clicked.connect(self.show_about)
-        self.btn_sair.clicked.connect(self.close)
+    def _line(self):
+        l = QFrame(); l.setFrameShape(QFrame.Shape.HLine); l.setFrameShadow(QFrame.Shadow.Sunken)
+        return l
 
-    # --- Helpers de console ---
-    def _divisor_verde(self):
-        """Insere uma linha divisória verde usando texto."""
-        cursor = self.console.textCursor()
+    def _log(self, msg, color=GRAY_900):
+        cursor = self._console.textCursor()
         cursor.movePosition(QTextCursor.MoveOperation.End)
-        # Configura a cor verde no formato do texto
-        fmt = cursor.charFormat()
-        fmt.setForeground(QColor("#66A266"))  # verde
-        # Linha de traços box-drawing (fica bem visível)
-        cursor.insertText("─" * DIVISOR_LEN + "\n", fmt)
-        self.console.setTextCursor(cursor)
+        fmt = cursor.charFormat(); fmt.setForeground(QColor(color))
+        cursor.insertText(f"[{timestamp()}] {msg}\n", fmt)
+        self._console.moveCursor(QTextCursor.MoveOperation.End)
 
-    def log(self, msg: str):
-        self.console.append(f"[{agora()}] {msg}")
-        self.console.moveCursor(QTextCursor.MoveOperation.End)
-
-    def log_err(self, msg: str):
-        self.console.append(f"[{agora()}] ERRO: {msg}")
-        self.console.moveCursor(QTextCursor.MoveOperation.End)
-
-    def run_cmd(self, cmd: str, interactive=False):
-        """Executa comando via cmd.exe /c no Windows."""
-        if not IS_WINDOWS:
-            QMessageBox.critical(self, "Erro", "Aplicativo preparado para Windows.")
+    def _run(self, cmd, detached=False):
+        if not IS_WINDOWS: return
+        if self._proc.state() == QProcess.ProcessState.Running:
+            self._log("AVISO: Comando em execução. Clique em PARAR antes.", RED)
             return
-        if self.proc.state() != QProcess.NotRunning:
-            self.log_err("Já existe um comando em execução. Aguarde finalizar.")
-            return
+        self._log(f"─" * 60, GREEN)
+        self._log(f"$ {cmd}", ACCENT)
+        if detached: QProcess.startDetached("cmd.exe", ["/c", cmd])
+        else: self._proc.start("cmd.exe", ["/c", cmd])
 
-        # Linha verde separando início (antes de executar)
-        self._divisor_verde()
+    def _on_stdout(self):
+        data = self._proc.readAllStandardOutput().data().decode("cp850", errors="replace")
+        self._console.insertPlainText(data)
+        self._console.moveCursor(QTextCursor.MoveOperation.End)
 
-        if interactive:
-            self.log(f"Executando (externo): {cmd}")
-            QProcess.startDetached("cmd.exe", ["/c", cmd])
-            # Linha verde também ao final de abertura externa
-            self._divisor_verde()
-            return
+    def _on_finished(self, code):
+        self._log(f"Processo finalizado (Código: {code})", GRAY_400)
 
-        self.log(f"$ {cmd}")
-        self.status.showMessage(f"Executando: {cmd}")
-        self.proc.start("cmd.exe", ["/c", cmd])
-
-    # --- Saída do processo ---
-    def on_stdout(self):
-        data = self.proc.readAllStandardOutput().data().decode("utf-8", errors="ignore")
-        if data:
-            self.console.append(data.rstrip())
-            self.console.moveCursor(QTextCursor.MoveOperation.End)
-
-    def on_stderr(self):
-        data = self.proc.readAllStandardError().data().decode("utf-8", errors="ignore")
-        if data:
-            for line in data.splitlines():
-                self.console.append(f"STDERR: {line}")
-            self.console.moveCursor(QTextCursor.MoveOperation.End)
-
-    def on_finished(self, code, status):
-        self.status.showMessage(f"Finalizado (código={code}, status={status}).")
-        self.log(f"Comando finalizado com código {code}")
-        # Linha verde separando fim
-        self._divisor_verde()
-
-    def on_error(self, error):
-        self.log_err(f"Erro ao iniciar processo: {error}")
-        self.status.showMessage("Erro ao iniciar processo.")
-        # Linha verde mesmo em erro
-        self._divisor_verde()
-
-    # --- Ações ---
-    def do_ping(self):
-        alvo = self.input_dom.text().strip() or self.input_ip.text().strip()
-        if not alvo:
-            QMessageBox.warning(self, "Atenção", "Informe um IP ou domínio.")
-            return
-        if validar_ip(alvo) or "." in alvo:
-            self.run_cmd(f"ping {alvo}")
+    def _stop_process(self):
+        """Encerra o comando atual e toda a sua árvore de processos."""
+        if self._proc.state() == QProcess.ProcessState.Running:
+            pid = self._proc.processId()
+            # Encerra o cmd e os filhos (tracert, ping, etc)
+            os.system(f"taskkill /F /T /PID {pid}")
+            self._proc.terminate()
+            self._log("!! COMANDO INTERROMPIDO PELO USUÁRIO !!", RED)
         else:
-            QMessageBox.warning(self, "Atenção", "IP/Domínio inválido.")
+            self._log("Nenhum processo ativo para parar.", GRAY_400)
 
-    def do_ipconfig(self):
-        self.run_cmd("ipconfig /all")
+    # Ações
+    def _do_hostname(self): self._run("hostname")
+    def _do_ipconfig(self): self._run("ipconfig /all")
+    def _do_route(self): self._run("route print")
+    def _do_netstat(self): self._run("netstat -an")
+    def _do_arp(self): self._run("arp -a")
+    def _do_gpresult(self): self._run("gpresult /R")
+    
+    def _do_ping(self):
+        alvo = self._f_dom.edit.text().strip() or self._f_ip.edit.text().strip()
+        if alvo: self._run(f"ping {alvo}")
+        else: QMessageBox.warning(self, "Erro", "Informe IP ou Domínio")
 
-    def do_hostname(self):
-        ip = self.input_ip.text().strip()
-        if not ip:
-            self.run_cmd("hostname")
-            return
-        if validar_ip(ip) or "." in ip:
-            self.run_cmd(f"ping -a {ip}")
-        else:
-            QMessageBox.warning(self, "Atenção", "IP inválido.")
+    def _do_nslookup(self):
+        dom = self._f_dom.edit.text().strip()
+        if dom: self._run(f"nslookup {dom}")
+        else: QMessageBox.warning(self, "Erro", "Informe um Domínio")
 
-    def do_tracert(self):
-        destino = self.input_dom.text().strip() or self.input_ip.text().strip()
-        if not destino:
-            QMessageBox.warning(self, "Atenção", "Informe um IP ou domínio.")
-            return
-        if validar_ip(destino) or "." in destino:
-            self.run_cmd(f"tracert {destino}")
-        else:
-            QMessageBox.warning(self, "Atenção", "IP/Domínio inválido.")
+    def _do_tracert(self):
+        alvo = self._f_dom.edit.text().strip() or self._f_ip.edit.text().strip()
+        if alvo: self._run(f"tracert {alvo}")
+        else: QMessageBox.warning(self, "Erro", "Informe IP ou Domínio")
 
-    def do_telnet(self):
-        """Verifica porta usando PowerShell Test-NetConnection (sem precisar do Telnet)."""
-        ip = self.input_ip.text().strip()
-        porta = self.input_porta.text().strip()
-        if not (validar_ip(ip) and validar_porta(porta)):
-            QMessageBox.warning(self, "Atenção", "IP ou porta inválidos.")
-            return
+    def _do_reverse_dns(self):
+        ip = self._f_ip.edit.text().strip()
+        if validate_ip(ip): self._run(f"ping -a {ip}")
+        else: QMessageBox.warning(self, "Erro", "Informe um IP válido")
 
-        ps_cmd = (
-            f"powershell -NoProfile -ExecutionPolicy Bypass "
-            f"-Command \"Test-NetConnection {ip} -Port {porta} | "
-            f"Format-List -Property ComputerName,RemoteAddress,RemotePort,TcpTestSucceeded\""
-        )
-        self.run_cmd(ps_cmd)
+    def _do_telnet(self):
+        ip, port = self._f_ip.edit.text().strip(), self._f_port.edit.text().strip()
+        if validate_ip(ip) and validate_port(port):
+            self._run(f'powershell "Test-NetConnection {ip} -Port {port}"')
+        else: QMessageBox.warning(self, "Erro", "IP e Porta necessários")
 
-    def do_nslookup(self):
-        dominio = self.input_dom.text().strip()
-        if not dominio:
-            QMessageBox.warning(self, "Atenção", "Informe um domínio.")
-            return
-        self.run_cmd(f"nslookup {dominio}")
-
-    def do_netstat(self):
-        self.run_cmd("netstat -an")
-
-    def do_arp(self):
-        self.run_cmd("arp -a")
-
-    def do_route(self):
-        self.run_cmd("route print")
-
-    def do_gpresult(self):
-        self.run_cmd("gpresult /R")
-
-    def do_cmd(self):
-        self.run_cmd("start cmd.exe", interactive=True)
-
-    def do_rdp(self):
-        self.run_cmd("start mstsc.exe", interactive=True)
-
-    def show_about(self):
-        QMessageBox.information(
-            self,
-            "Sobre",
-            "Automação de rede em Python(PySide6). By Kleberson Pastori 😃 😄 😁 🖥 🖧",
-        )
-
-def main():
-    app = QApplication(sys.argv)
-    app.setApplicationName("AutoEver - Ferramentas de Rede")
-    gui = NetworkGUI()
-    gui.show()
-    sys.exit(app.exec())
+    def _do_rdp(self): self._run("start mstsc.exe", True)
+    def _do_cmd(self): self._run("start cmd.exe", True)
 
 if __name__ == "__main__":
-    main()
-
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    win = NetworkGUI()
+    win.show()
+    sys.exit(app.exec())
