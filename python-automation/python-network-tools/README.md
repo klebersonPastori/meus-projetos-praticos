@@ -25,7 +25,7 @@ logs estruturados e leitura otimizada.
 
 > 📌 Recomendado adicionar um GIF aqui futuramente:
 
-    assets/demo.gif
+    assets/demo.png
 
 ------------------------------------------------------------------------
 
