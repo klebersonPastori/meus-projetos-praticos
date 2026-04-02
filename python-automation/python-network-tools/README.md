@@ -25,7 +25,7 @@ logs estruturados e leitura otimizada.
 
 > 📌 Recomendado adicionar um GIF aqui futuramente:
 
-    ![Preview da aplicação](assets/demo.png)
+    ![Preview](./assets/demo.png)
 
 ------------------------------------------------------------------------
 
