@@ -5,64 +5,131 @@
 ![OS](https://img.shields.io/badge/OS-Windows-lightgrey.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-Aplicativo desktop desenvolvido em **Python + PySide6** que atua como um
-painel centralizado para execução e diagnóstico de comandos de rede no
-Windows.
-
-A ferramenta elimina a necessidade de uso direto do Prompt de Comando,
-permitindo executar operações críticas de rede e segurança através de
-uma interface gráfica moderna, com saída detalhada em tempo real.
+> Ferramenta desktop profissional para diagnóstico de rede e operações
+> de cibersegurança com interface gráfica moderna.
 
 ------------------------------------------------------------------------
 
-## ✨ Principais Funcionalidades
+## 🚀 Visão Geral
 
--   Interface moderna e responsiva
--   Execução assíncrona (QProcess)
--   Console com timestamp e logs organizados
--   Botão de parada de processos (taskkill)
+O **Python Network Tools** é um painel centralizado para execução de
+comandos de rede no Windows, focado em produtividade, análise rápida e
+uso em ambientes corporativos.
+
+Elimina a dependência de terminal manual e organiza os resultados com
+logs estruturados e leitura otimizada.
+
+------------------------------------------------------------------------
+
+## 🖥️ Interface (Preview)
+
+> 📌 Recomendado adicionar um GIF aqui futuramente:
+
+    assets/demo.gif
+
+------------------------------------------------------------------------
+
+## ✨ Features
+
+-   Interface moderna (UI/UX clean)
+-   Execução assíncrona com QProcess
+-   Console com timestamp e logs estruturados
+-   Interrupção forçada de processos (taskkill)
 -   Validação de IP e portas
--   Execução segura (1 comando por vez)
+-   Execução segura (anti-concorrência)
 -   Atalhos para CMD e RDP
 
 ------------------------------------------------------------------------
 
-## 🧰 Comandos Disponíveis
+## 🧰 Comandos
 
-PING, IPCONFIG, HOSTNAME, TRACERT, NSLOOKUP, NETSTAT, ARP, ROUTE,
-GPRESULT, REVERSE DNS, TEST-NETCONNECTION, RDP, CMD
+  Categoria       Comando
+  --------------- ------------------------------
+  Conectividade   PING
+  Configuração    IPCONFIG /ALL
+  Sistema         HOSTNAME
+  Roteamento      TRACERT / ROUTE PRINT
+  DNS             NSLOOKUP / Reverse DNS
+  Segurança       NETSTAT / TEST-NETCONNECTION
+  Rede local      ARP -A
+  Domínio         GPRESULT
 
 ------------------------------------------------------------------------
 
 ## ⚙️ Arquitetura
 
-Python + PySide6 + QProcess\
-Console com QTextEdit\
-Encoding cp850
+-   Python
+-   PySide6 (QMainWindow)
+-   QProcess (execução assíncrona)
+-   QTextEdit (console)
+-   Encoding cp850
 
 ------------------------------------------------------------------------
 
-## 💻 Requisitos
+## ▶️ Execução
 
-Windows 10+\
-Python 3.9+\
-PySide6
+``` bash
+pip install PySide6
+python python-network-tools.py
+```
 
 ------------------------------------------------------------------------
 
-## ▶️ Execução via .bat
+## ⚡ Execução via .bat
 
-Arquivo: Run_Python_Program.bat
+``` bat
+set PYTHON_EXE=C:\Python314\pythonw.exe
+```
 
-Configurar:
+✔ Executa sem abrir terminal\
+✔ Ideal para usuários finais
 
-set PYTHON_EXE=C:`\Python314`{=tex}`\pythonw`{=tex}.exe
+------------------------------------------------------------------------
 
-Executar com duplo clique.
+## 📦 Estrutura do Projeto
+
+    📁 project/
+     ┣ 📄 python-network-tools.py
+     ┣ 📄 Run_Python_Program.bat
+     ┗ 📁 assets/
+
+------------------------------------------------------------------------
+
+## 🎯 Casos de Uso
+
+-   SOC / Blue Team
+-   Help Desk
+-   Infraestrutura
+-   Estudo de redes
+
+------------------------------------------------------------------------
+
+## 🧠 Diferenciais
+
+-   Foco em uso real (não apenas acadêmico)
+-   Interface amigável para operação rápida
+-   Aplicável em ambiente corporativo
+-   Base para evolução DevSecOps
+
+------------------------------------------------------------------------
+
+## 🗺️ Roadmap
+
+-   [ ] Dark Mode
+-   [ ] Exportação de logs
+-   [ ] Histórico de comandos
+-   [ ] Versão .exe
+-   [ ] Multiplataforma
 
 ------------------------------------------------------------------------
 
 ## 👨‍💻 Autor
 
-Kleberson Pastori\
-Engenharia de Software \| Cibersegurança
+**Kleberson Pastori**\
+Software Engineering \| Cybersecurity
+
+------------------------------------------------------------------------
+
+## ⭐ Contribuição
+
+Sinta-se livre para abrir PRs ou sugestões.
