@@ -147,7 +147,7 @@ Este repositório não é apenas código — é uma demonstração prática de:
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0d1117?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/kleberson-pastori-5b11b3119)
 
-[![Portfólio](https://img.shields.io/badge/Portfólio_Web-0d1117?style=for-the-badge&logo=googlechrome)](http://meu.curriculo.kleber.s3-website-us-east-1.amazonaws.com/)
+[![Portfólio](https://img.shields.io/badge/Portfólio_Web-0d1117?style=for-the-badge&logo=googlechrome)](https://d2evldp5u1l2ee.cloudfront.net/)
 
 [![Email](https://img.shields.io/badge/Email-0d1117?style=for-the-badge&logo=gmail)](mailto:kleber-pastori@hotmail.com)
 
