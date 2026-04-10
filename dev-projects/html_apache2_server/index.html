@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DevSecOps Pipeline Simulator - CI/CD Automation Dashboard">
+    <meta name="author" content="Kleberson Pastori">
+    <title>DevSecOps Pipeline Simulator</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Cores Corporativas (Inspiradas no padrão Bosch/Enterprise) */
+            --color-primary: #005691; 
+            --color-primary-dark: #004070;
+            --color-secondary: #E20015; /* Acento vermelho corporativo */
+            --color-bg-main: #f4f6f9; /* Fundo cinza bem claro */
+            --color-bg-card: #ffffff; /* Cards brancos */
+            --color-bg-logs: #1e1e1e; /* Logs estilo terminal escuro */
+            --color-text-primary: #333333;
+            --color-text-secondary: #666666;
+            --color-border: #e0e0e0;
+            --color-success: #198754;
+            --color-warning: #f59a23;
+            --color-danger: #dc3545;
+            --color-running: #0d6efd;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --radius: 4px; /* Bordas menos arredondadas para visual mais sério */
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            /* Fonte sem serifa, limpa e profissional */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--color-bg-main);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: #ffffff;
+            border-bottom: 3px solid var(--color-primary);
+            padding: var(--spacing-md) var(--spacing-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .header-status {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--color-danger);
+        }
+
+        .status-dot.idle { background-color: var(--color-warning); }
+        .status-dot.running {
+            background-color: var(--color-running);
+            animation: pulse 1.5s infinite;
+        }
+        .status-dot.success { background-color: var(--color-success); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .pipeline-container {
+            grid-column: 1 / -1;
+        }
+
+        .pipeline-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stage {
+            background: #fafafa;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: var(--spacing-sm);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Linha conectando os estágios */
+        .stage:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            width: 1rem;
+            height: 2px;
+            background: var(--color-border);
+            z-index: 1;
+        }
+
+        .stage.pending {
+            border-color: var(--color-border);
+            color: var(--color-text-secondary);
+        }
+
+        .stage.running {
+            border-color: var(--color-running);
+            background: #f0f7ff;
+            border-width: 2px;
+        }
+
+        .stage.success {
+            border-color: var(--color-success);
+            background: #f0fdf4;
+        }
+
+        .stage.failed {
+            border-color: var(--color-danger);
+            background: #fef2f2;
+        }
+
+        .stage-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: var(--color-text-primary);
+        }
+
+        .stage-status {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+        }
+
+        .stage-status.running { color: var(--color-running); font-weight: bold; }
+        .stage-status.success { color: var(--color-success); font-weight: bold; }
+        .stage-status.failed { color: var(--color-danger); font-weight: bold; }
+
+        .controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+            padding-top: 1rem;
+        }
+
+        button {
+            background: var(--color-primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--color-primary-dark);
+        }
+
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            background: #ffffff;
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+        }
+
+        .secondary-btn:hover:not(:disabled) {
+            background: #f4f6f9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .metric-label {
+            color: var(--color-text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            color: var(--color-text-primary);
+            font-weight: 700;
+            margin-top: 0.2rem;
+        }
+
+        /* Console de Logs mantendo visual de terminal, mas embutido de forma limpa */
+        .logs-container {
+            background: var(--color-bg-logs);
+            border-radius: var(--radius);
+            padding: var(--spacing-md);
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            font-family: 'Consolas', 'Courier New', monospace;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .log-line {
+            padding: 0.2rem 0;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .log-timestamp {
+            color: #858585;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+
+        .log-message {
+            color: #d4d4d4;
+            flex: 1;
+        }
+
+        .log-message.success { color: #4ade80; }
+        .log-message.error { color: #f87171; }
+        .log-message.warning { color: #fbbf24; }
+
+        .chart-container {
+            background: #f8f9fa;
+            padding: var(--spacing-md);
+            border-radius: var(--radius);
+            margin-top: var(--spacing-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            height: 120px;
+            justify-content: space-around;
+            padding-bottom: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--color-primary);
+            border-radius: 2px 2px 0 0;
+            min-height: 5px;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+
+        .bar.critical { background: var(--color-danger); }
+        .bar.high { background: var(--color-warning); }
+        .bar.medium { background: var(--color-primary); }
+
+        .bar-label {
+            position: absolute;
+            bottom: -22px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius);
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        .info-box h4 {
+            color: var(--color-text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }
+
+        .info-box p {
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .success-message {
+            background: #d1e7dd;
+            border: 1px solid #badbcc;
+            padding: 1rem;
+            border-radius: var(--radius);
+            color: #0f5132;
+            margin-top: var(--spacing-md);
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success-message.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .pipeline-stages { grid-template-columns: repeat(3, 1fr); }
+            .stage:not(:last-child)::after { display: none; }
+        }
+
+        @media (max-width: 640px) {
+            main { padding: var(--spacing-sm); }
+            .pipeline-stages { grid-template-columns: 1fr 1fr; }
+            .controls { flex-direction: column; }
+            button { width: 100%; }
+            .header-content { flex-direction: column; gap: var(--spacing-sm); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-bg-main); }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        /* Scrollbar específico para os logs */
+        .logs-container::-webkit-scrollbar-track { background: var(--color-bg-logs); }
+        .logs-container::-webkit-scrollbar-thumb { background: #444; }
+        .logs-container::-webkit-scrollbar-thumb:hover { background: #666; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">Pipeline CI/CD</div>
+            <div class="header-status">
+                <div class="status-indicator">
+                    <span class="status-dot idle" id="statusDot"></span>
+                    <span id="statusText">Sistema Pronto</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="card pipeline-container">
+            <h2>Pipeline DevSecOps</h2>
+            
+            <div class="pipeline-stages" id="pipelineStages">
+                <div class="stage pending" data-stage="checkout">
+                    <div class="stage-name">Checkout</div>
+                    <div class="stage-status">Aguardando</div>
+                </div>
+                <div class="stage pending" data-stage="sast">
+                    <div class="stage-name">SAST</div>
+                    <div class="stage-status">Aguardando</div>
+                </div>
+                <div class="stage pending" data-stage="build">
+                    <div class="stage-name">Build</div>
+                    <div class="stage-status">Aguardando</div>
+                </div>
+                <div class="stage pending" data-stage="dast">
+                    <div class="stage-name">DAST</div>
+                    <div class="stage-status">Aguardando</div>
+                </div>
+                <div class="stage pending" data-stage="deploy">
+                    <div class="stage-name">Deploy</div>
+                    <div class="stage-status">Aguardando</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="runButton" onclick="executePipeline()">Executar Pipeline</button>
+                <button class="secondary-btn" onclick="resetPipeline()">Resetar</button>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Pipeline executado com sucesso - Todas as verificações passaram
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Métricas de Segurança</h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Vulns. Críticas</div>
+                        <div class="metric-value" id="criticalCount">0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Cobertura</div>
+                        <div class="metric-value" id="coverage">0%</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Issues</div>
+                        <div class="metric-value" id="issuesCount">0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Tempo Total</div>
+                        <div class="metric-value" id="totalTime">0s</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div style="color: var(--color-text-primary); font-size: 0.9rem; margin-bottom: 1rem; font-weight: 600;">Distribuição de Severidade</div>
+                    <div class="chart-bars">
+                        <div class="bar critical" style="height: 45%;" id="criticalBar">
+                            <div class="bar-label">Crítica</div>
+                        </div>
+                        <div class="bar high" style="height: 65%;" id="highBar">
+                            <div class="bar-label">Alta</div>
+                        </div>
+                        <div class="bar medium" style="height: 35%;" id="mediumBar">
+                            <div class="bar-label">Média</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Informações do Build</h2>
+                <div class="info-grid">
+                    <div class="info-box">
+                        <h4>Branch</h4>
+                        <p>main</p>
+                    </div>
+                    <div class="info-box">
+                        <h4>Commit</h4>
+                        <p id="commitId">a3f9d2e</p>
+                    </div>
+                    <div class="info-box">
+                        <h4>Ambiente</h4>
+                        <p>Production</p>
+                    </div>
+                    <div class="info-box">
+                        <h4>Runtime</h4>
+                        <p>Python 3.11</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Console de Execução</h2>
+            <div class="logs-container" id="logsContainer">
+                <div class="log-line">
+                    <span class="log-timestamp">[00:00:00]</span>
+                    <span class="log-message">Sistema aguardando execução...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const pipelineStages = [
+            { name: 'checkout', duration: 3 },
+            { name: 'sast', duration: 8 },
+            { name: 'build', duration: 6 },
+            { name: 'dast', duration: 7 },
+            { name: 'deploy', duration: 4 }
+        ];
+
+        let isRunning = false;
+        let startTime = 0;
+
+        function getTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function addLog(message, type = 'normal') {
+            const logsContainer = document.getElementById('logsContainer');
+            const logLine = document.createElement('div');
+            logLine.className = 'log-line';
+            logLine.innerHTML = `
+                <span class="log-timestamp">[${getTimestamp()}]</span>
+                <span class="log-message ${type}">${message}</span>
+            `;
+            logsContainer.appendChild(logLine);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        function updateStageStatus(stageName, status) {
+            const stage = document.querySelector(`[data-stage="${stageName}"]`);
+            if (stage) {
+                stage.classList.remove('pending', 'running', 'success', 'failed');
+                stage.classList.add(status);
+                
+                const statusText = stage.querySelector('.stage-status');
+                const statusMap = {
+                    'running': 'Executando...',
+                    'success': 'Concluído',
+                    'failed': 'Falhou',
+                    'pending': 'Aguardando'
+                };
+                statusText.textContent = statusMap[status];
+                statusText.className = `stage-status ${status === 'running' ? 'running' : status === 'success' ? 'success' : status === 'failed' ? 'failed' : ''}`;
+            }
+        }
+
+        function updateMetrics() {
+            const random = Math.floor(Math.random() * 3);
+            document.getElementById('criticalCount').textContent = random;
+            document.getElementById('coverage').textContent = Math.floor(70 + Math.random() * 25) + '%';
+            document.getElementById('issuesCount').textContent = Math.floor(5 + Math.random() * 15);
+        }
+
+        function updateStatusIndicator(status) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            const statusMap = {
+                'idle': { dot: 'idle', text: 'Sistema Pronto' },
+                'running': { dot: 'running', text: 'Executando Pipeline' },
+                'success': { dot: 'success', text: 'Último Build: Sucesso' },
+                'error': { dot: 'error', text: 'Último Build: Falha' }
+            };
+            
+            dot.className = `status-dot ${statusMap[status].dot}`;
+            text.textContent = statusMap[status].text;
+        }
+
+        async function executePipeline() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            startTime = Date.now();
+            document.getElementById('runButton').disabled = true;
+            document.getElementById('successMessage').classList.remove('show');
+            
+            resetPipelineVisual();
+            updateStatusIndicator('running');
+            addLog('Iniciando pipeline de CI/CD...', 'normal');
+            addLog('Conectando ao repositório...', 'normal');
+
+            let totalElapsed = 0;
+
+            for (const stage of pipelineStages) {
+                updateStageStatus(stage.name, 'running');
+                addLog(`► Iniciando stage: ${stage.name.toUpperCase()}`, 'normal');
+                
+                await new Promise(resolve => setTimeout(resolve, stage.duration * 1000));
+
+                totalElapsed += stage.duration;
+                
+                const stageLogs = getStageMessages(stage.name);
+                stageLogs.forEach(log => addLog(log.message, log.type));
+                
+                updateStageStatus(stage.name, 'success');
+                
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('totalTime').textContent = elapsed + 's';
+            }
+
+            updateMetrics();
+            addLog('Finalizando pipeline...', 'normal');
+            addLog('✓ Pipeline executado com sucesso!', 'success');
+            
+            document.getElementById('successMessage').classList.add('show');
+            updateStatusIndicator('success');
+            isRunning = false;
+            document.getElementById('runButton').disabled = false;
+        }
+
+        function getStageMessages(stageName) {
+            const messages = {
+                'checkout': [
+                    { message: 'Clone do repositório completado', type: 'success' },
+                    { message: 'Hash do commit: a3f9d2e7c4b1', type: 'normal' },
+                    { message: 'Branch: main', type: 'normal' }
+                ],
+                'sast': [
+                    { message: 'Executando SonarQube...', type: 'normal' },
+                    { message: 'Analisando código-fonte', type: 'normal' },
+                    { message: '2 vulnerabilidades detectadas', type: 'warning' },
+                    { message: 'SAST Scan completo', type: 'success' }
+                ],
+                'build': [
+                    { message: 'Compilando aplicação Python...', type: 'normal' },
+                    { message: 'Dependências resolvidas', type: 'success' },
+                    { message: 'Build finalizado com sucesso', type: 'success' }
+                ],
+                'dast': [
+                    { message: 'Iniciando Dynamic Application Security Testing', type: 'normal' },
+                    { message: 'Testando endpoints de segurança', type: 'normal' },
+                    { message: 'DAST scan finalizado', type: 'success' }
+                ],
+                'deploy': [
+                    { message: 'Preparando artefatos para deploy', type: 'normal' },
+                    { message: 'Sincronizando com Production', type: 'normal' },
+                    { message: '✓ Deploy realizado com sucesso', type: 'success' }
+                ]
+            };
+
+            return messages[stageName] || [];
+        }
+
+        function resetPipeline() {
+            isRunning = false;
+            document.getElementById('runButton').disabled = false;
+            resetPipelineVisual();
+            document.getElementById('successMessage').classList.remove('show');
+            updateStatusIndicator('idle');
+            
+            const logsContainer = document.getElementById('logsContainer');
+            logsContainer.innerHTML = `
+                <div class="log-line">
+                    <span class="log-timestamp">[${getTimestamp()}]</span>
+                    <span class="log-message">Sistema resetado. Pronto para nova execução.</span>
+                </div>
+            `;
+
+            document.getElementById('criticalCount').textContent = '0';
+            document.getElementById('coverage').textContent = '0%';
+            document.getElementById('issuesCount').textContent = '0';
+            document.getElementById('totalTime').textContent = '0s';
+        }
+
+        function resetPipelineVisual() {
+            pipelineStages.forEach(stage => {
+                updateStageStatus(stage.name, 'pending');
+            });
+        }
+    </script>
+</body>
+</html>
