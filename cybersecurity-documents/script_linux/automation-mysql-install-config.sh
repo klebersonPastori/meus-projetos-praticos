@@ -29,7 +29,7 @@ fi
 
 # 2. Comando de instalação
 echo "[+] Baixando e instalando pacotes..."
-apt install mysql-server-8.0 -y
+apt install mysql-client-core -y
 
 echo "[+] MySQL instalado com êxito."
 echo "[+] Iniciando automação para cadastrar usuários..."
