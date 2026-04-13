@@ -28,8 +28,14 @@ else
 fi
 
 # 2. Comando de instalação
-echo "[+] Baixando e instalando pacotes..."
-apt install mysql-client-core -y
+echo "[+] Atualizando repositórios e instalando pacotes..."
+apt update -y
+apt install mysql-server -y
+
+# Garantindo que o serviço do MySQL seja iniciado e habilitado para iniciar com o sistema
+echo "[+] Iniciando o serviço do banco de dados..."
+systemctl start mysql
+systemctl enable mysql
 
 echo "[+] MySQL instalado com êxito."
 echo "[+] Iniciando automação para cadastrar usuários..."
